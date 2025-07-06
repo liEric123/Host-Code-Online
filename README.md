@@ -1,79 +1,218 @@
-# Host Code Online
+# 🚀 Host Code Online
 
-A simple web application that allows you to upload code to rentry.co and get a shareable URL instantly.
+A fast, elegant web application for hosting and sharing code snippets online using rentry.co. No login required!
 
-## Features
+![Host Code Online](https://img.shields.io/badge/Python-3.9+-blue.svg)
+![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-- 🚀 **Easy Upload**: Paste your code and get a rentry.co URL immediately
-- 🎨 **Beautiful UI**: Modern, responsive web interface
-- 🔧 **Custom Options**: Set custom URLs and edit codes
-- 📱 **Mobile Friendly**: Works great on all devices
-- 🔗 **Instant Sharing**: Copy URLs with one click
+## ✨ Features
 
-## How It Works
+- **🎯 Zero Setup**: No registration or login required
+- **📁 File Upload**: Upload code files directly from your computer
+- **🎨 Drag & Drop**: Simply drag files onto the interface
+- **📱 Mobile Friendly**: Responsive design that works on all devices
+- **🌙 Dark Mode**: Built-in light/dark theme toggle
+- **✨ Code Formatting**: Automatic code formatting for popular languages
+- **🔗 Custom URLs**: Create memorable URLs for your code snippets
+- **🔐 Edit Codes**: Set passwords to edit your snippets later
+- **🎨 Syntax Support**: Supports 25+ programming languages and file types
 
-This tool uses rentry.co's API to upload your code and return a shareable URL. Rentry.co is a markdown-powered paste service that's perfect for sharing code snippets.
+## 🔧 Supported File Types
 
-## Installation
+- **Languages**: Python, JavaScript, TypeScript, HTML, CSS, JSON, C++, C, Java, C#, PHP, Ruby, Go, Rust, Swift, Kotlin, Scala
+- **Config Files**: YAML, TOML, INI, XML
+- **Scripts**: Shell, Batch, PowerShell
+- **Documentation**: Markdown, Text files
+- **Database**: SQL
 
-1. Clone this repository or download the files
-2. Install dependencies:
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.9 or higher
+- pip (Python package installer)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/Host-Code-Online.git
+   cd Host-Code-Online
+   ```
+
+2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-## Usage
-
-1. Start the Flask application:
+3. **Run the application**
    ```bash
-   python app.py
+   python3 app.py
    ```
 
-2. Open your browser and go to `http://localhost:5001`
+4. **Open your browser**
+   ```
+   http://localhost:5001
+   ```
 
-3. Paste your code in the text area
+That's it! 🎉
 
-4. Optionally set a custom URL and edit code
+## 🎮 How to Use
 
-5. Click "Upload Code" to get your rentry.co URL
+### Method 1: Manual Input
+1. Paste your code into the textarea
+2. Optionally set a custom URL and edit code
+3. Click "Upload Code"
 
-## API Endpoints
+### Method 2: File Upload
+1. Click "📁 Choose File(s)" button
+2. Select one or multiple code files
+3. Click "Upload Code"
 
-- `GET /` - Main web interface
-- `POST /upload` - Upload code to rentry.co
-  
-### Upload Request Format
-```json
-{
-    "code": "your code here",
-    "url": "optional-custom-url",
-    "edit_code": "optional-edit-password"
-}
-```
+### Method 3: Drag & Drop
+1. Drag your code files onto the textarea
+2. Drop them and they'll be automatically loaded
+3. Click "Upload Code"
 
-### Upload Response Format
-```json
-{
-    "success": true,
-    "url": "https://rentry.co/your-url",
-    "edit_code": "your-edit-code",
-    "message": "Code uploaded successfully!"
-}
-```
+## 🛠️ Technical Details
 
-## Features Explained
-
-- **Custom URL**: Choose your own URL path (e.g., rentry.co/my-code)
-- **Edit Code**: Set a password to edit your code later
-- **Syntax Highlighting**: Rentry.co automatically detects and highlights your code
-- **Markdown Support**: Your code is formatted as markdown for better readability
-
-## Tech Stack
-
+### Architecture
 - **Backend**: Flask (Python)
-- **Frontend**: HTML, CSS, JavaScript
-- **API**: Rentry.co REST API
+- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+- **API Integration**: rentry.co API for hosting
+- **Styling**: Custom CSS with CSS Variables for theming
 
-## License
+### Key Components
 
-MIT License - Feel free to use and modify as needed. 
+- **`app.py`**: Main Flask application with routing and rentry.co integration
+- **`templates/index.html`**: Single-page frontend with all functionality
+- **`requirements.txt`**: Python dependencies
+- **File Processing**: Client-side JavaScript for file handling
+- **Code Formatting**: Built-in formatters for multiple languages
+
+### Features Deep Dive
+
+#### File Upload & Drag-and-Drop
+- **Size Limit**: 1MB per file
+- **Multiple Files**: Automatically combines with headers
+- **Content Handling**: Smart replace/append logic
+- **Error Handling**: Graceful validation and user feedback
+
+#### Code Formatting
+- **Language Detection**: Automatic language recognition
+- **Formatters**: Built-in formatters for Python, JavaScript, JSON, HTML, CSS, SQL, C++
+- **Fallback**: Generic formatting for unsupported languages
+
+#### Dark Mode
+- **CSS Variables**: Seamless theme switching
+- **Persistence**: Theme choice saved in localStorage
+- **Animations**: Smooth transitions between themes
+
+## 📋 API Reference
+
+### Upload Endpoint
+```
+POST /upload
+Content-Type: application/json
+
+{
+  "code": "your code here",
+  "url": "custom-url (optional)",
+  "edit_code": "edit-password (optional)"
+}
+```
+
+### Format Endpoint
+```
+POST /format
+Content-Type: application/json
+
+{
+  "code": "your code here",
+  "language": "python (optional)"
+}
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Make your changes**
+4. **Test thoroughly**
+5. **Commit your changes**
+   ```bash
+   git commit -m "Add amazing feature"
+   ```
+6. **Push to your branch**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+7. **Open a Pull Request**
+
+### Development Setup
+
+1. **Clone your fork**
+   ```bash
+   git clone https://github.com/yourusername/Host-Code-Online.git
+   ```
+
+2. **Create a virtual environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run in development mode**
+   ```bash
+   python3 app.py
+   ```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [rentry.co](https://rentry.co) for providing the hosting service
+- [Flask](https://flask.palletsprojects.com/) for the web framework
+- All contributors who help improve this project
+
+## 📊 Project Stats
+
+- **Languages**: Python, JavaScript, HTML, CSS
+- **Dependencies**: Flask, Requests, BeautifulSoup4, autopep8, jsbeautifier
+- **File Size**: ~30KB total
+- **Performance**: Handles files up to 1MB, supports 25+ languages
+
+## 🔗 Links
+
+- **Live Demo**: [Coming Soon]
+- **Issues**: [Report bugs or request features](https://github.com/yourusername/Host-Code-Online/issues)
+- **Discussions**: [Join the conversation](https://github.com/yourusername/Host-Code-Online/discussions)
+
+## 📈 Roadmap
+
+- [ ] Add more language formatters
+- [ ] Implement syntax highlighting preview
+- [ ] Add batch file processing
+- [ ] Create browser extension
+- [ ] Add API rate limiting
+- [ ] Implement code expiration options
+- [ ] Add code sharing via QR codes
+
+---
+
+⭐ **Star this repo if you find it helpful!**
+
+Made with ❤️ by the open source community 
