@@ -1,15 +1,13 @@
 # Contributing to Host Code Online
 
-Thank you for your interest in contributing to Host Code Online! We welcome contributions from everyone and are grateful for every pull request, issue report, and suggestion.
+Thanks for your interest in contributing! We welcome all contributions.
 
-## 🤝 Ways to Contribute
+## 🤝 How to Contribute
 
-- **🐛 Report bugs**: Found a bug? Let us know!
-- **💡 Suggest features**: Have an idea? We'd love to hear it!
-- **📖 Improve documentation**: Help make our docs better
-- **🔧 Fix issues**: Pick up an existing issue and solve it
+- **🐛 Report bugs**: Found a bug? Open an issue
+- **💡 Suggest features**: Have an idea? Let us know
+- **🔧 Fix issues**: Pick up an existing issue
 - **✨ Add features**: Implement new functionality
-- **🎨 Improve UI/UX**: Make the interface more beautiful and usable
 
 ## 🚀 Getting Started
 
@@ -20,143 +18,85 @@ Thank you for your interest in contributing to Host Code Online! We welcome cont
    cd Host-Code-Online
    ```
 
-3. **Set up development environment**
+3. **Install dependencies**
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+4. **Run the app**
    ```bash
    python3 app.py
    ```
 
-## 📋 Development Guidelines
+## 📦 Making Changes
+
+1. **Create a branch**
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+
+2. **Make your changes**
+   - Keep changes focused
+   - Follow existing code style
+   - Test thoroughly
+
+3. **Commit and push**
+   ```bash
+   git add .
+   git commit -m "Add your feature"
+   git push origin feature/your-feature
+   ```
+
+4. **Create a Pull Request**
+
+## 📋 Guidelines
 
 ### Code Style
-- **Python**: Follow PEP 8 guidelines
-- **JavaScript**: Use semicolons and consistent indentation
-- **HTML/CSS**: Use semantic HTML and organize CSS logically
+- **Python**: Follow PEP 8
+- **JavaScript**: Use consistent indentation
+- **HTML/CSS**: Keep it clean and organized
 
 ### Commit Messages
-Use clear, descriptive commit messages:
-- `feat: add drag-and-drop file upload`
-- `fix: resolve dark mode toggle issue`
-- `docs: update installation instructions`
-- `style: improve mobile responsiveness`
+- `feat: add new feature`
+- `fix: resolve bug`
+- `docs: update documentation`
+- `style: improve UI`
 
 ### Testing
-- Test your changes thoroughly
-- Ensure the app works on different screen sizes
-- Test with various file types and sizes
+- Test your changes on different browsers
+- Test file upload functionality
 - Check both light and dark modes
 
 ## 🐛 Reporting Issues
 
-When reporting bugs, please include:
-- **Environment**: OS, Python version, browser
-- **Steps to reproduce**: Clear step-by-step instructions
-- **Expected behavior**: What should happen
-- **Actual behavior**: What actually happens
-- **Screenshots**: If applicable
+Include:
+- Your OS and browser
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots if helpful
 
 ## 💡 Feature Requests
 
-For feature requests, please describe:
-- **The problem**: What issue would this solve?
-- **The solution**: How would you like it to work?
-- **Alternatives**: Any alternative solutions you've considered
-- **Use cases**: How would this benefit users?
+Describe:
+- The problem you're solving
+- How it should work
+- Why it would be useful
 
-## 📦 Pull Request Process
+## 🎯 Good First Issues
 
-1. **Create a feature branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes**
-   - Keep changes focused and atomic
-   - Follow the existing code style
-   - Add comments for complex logic
-
-3. **Test thoroughly**
-   - Test on different browsers
-   - Test file upload functionality
-   - Test responsive design
-
-4. **Commit your changes**
-   ```bash
-   git add .
-   git commit -m "feat: add your feature description"
-   ```
-
-5. **Push to your fork**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-6. **Create a Pull Request**
-   - Use a clear, descriptive title
-   - Explain what your changes do
-   - Reference any related issues
-
-## 🏷️ Issue Labels
-
-We use these labels to organize issues:
-- `bug`: Something isn't working
-- `enhancement`: New feature or request
-- `documentation`: Improvements to documentation
-- `good first issue`: Good for newcomers
-- `help wanted`: Extra attention is needed
-- `question`: Further information is requested
-
-## 📝 Code of Conduct
-
-Be respectful and considerate:
-- Use welcoming and inclusive language
-- Be respectful of differing viewpoints
-- Give and receive constructive feedback gracefully
-- Focus on what's best for the community
-
-## 🎯 Areas for Contribution
-
-### High Priority
-- [ ] Add more language formatters (Go, Rust, etc.)
-- [ ] Improve error handling and user feedback
-- [ ] Add unit tests
-- [ ] Optimize performance for large files
-
-### Medium Priority
-- [ ] Add syntax highlighting preview
-- [ ] Implement batch file processing
-- [ ] Add keyboard shortcuts
-- [ ] Improve mobile experience
-
-### Low Priority
-- [ ] Create browser extension
-- [ ] Add themes beyond light/dark
-- [ ] Implement user analytics
-- [ ] Add code sharing via QR codes
+Look for issues labeled:
+- `good first issue`
+- `help wanted`
+- `bug`
 
 ## 📚 Resources
 
 - [Flask Documentation](https://flask.palletsprojects.com/)
-- [rentry.co API Documentation](https://rentry.co/api)
-- [JavaScript File API](https://developer.mozilla.org/en-US/docs/Web/API/File)
-- [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+- [rentry.co](https://rentry.co)
 
-## 🤔 Questions?
+## 🙏 Questions?
 
-If you have questions about contributing, feel free to:
-- Open an issue with the `question` label
-- Start a discussion in the GitHub Discussions tab
-- Look through existing issues for similar questions
-
-## 🙏 Recognition
-
-All contributors will be recognized in our README and release notes. Thank you for helping make Host Code Online better!
+Open an issue with the `question` label or start a discussion.
 
 ---
 
