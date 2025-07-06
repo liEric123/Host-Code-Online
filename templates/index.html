@@ -465,6 +465,73 @@
             font-style: italic;
         }
 
+        .multi-file-options {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .multi-file-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: var(--input-bg);
+            border: 2px solid transparent;
+        }
+
+        .radio-option:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: var(--input-focus);
+        }
+
+        .radio-option input[type="radio"] {
+            margin: 0;
+            accent-color: var(--input-focus);
+        }
+
+        .radio-text {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+        }
+
         .drag-drop-overlay {
             position: absolute;
             top: 0;
@@ -595,6 +662,16 @@
             .drag-drop-content p {
                 font-size: 1rem;
             }
+
+            /* Mobile multi-file options */
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .radio-option {
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
@@ -632,6 +709,19 @@
                         📁 Choose File(s)
                     </button>
                     <span class="file-help-text">or drag & drop files above</span>
+                </div>
+                <div class="multi-file-options" id="multiFileOptions" style="display: none;">
+                    <label class="multi-file-label">For multiple files:</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="multiFileMode" value="combine" checked>
+                            <span class="radio-text">📄 Combine into one paste</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="multiFileMode" value="separate">
+                            <span class="radio-text">📂 Create separate pastes</span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -750,17 +840,28 @@
             const files = e.target.files;
             if (files.length > 0) {
                 processFiles(files);
+            } else {
+                // Hide multi-file options when no files selected
+                document.getElementById('multiFileOptions').style.display = 'none';
             }
         }
 
         async function processFiles(files) {
+            // Show/hide multi-file options based on file count
+            const multiFileOptions = document.getElementById('multiFileOptions');
+            if (files.length > 1) {
+                multiFileOptions.style.display = 'block';
+            } else {
+                multiFileOptions.style.display = 'none';
+            }
+
             // Show processing indicator
             fileProcessing.classList.add('active');
             
             try {
-                let combinedContent = '';
-                let fileCount = 0;
+                let validFiles = [];
                 
+                // First, validate all files
                 for (let file of files) {
                     // Check file size (limit to 1MB per file)
                     if (file.size > 1024 * 1024) {
@@ -774,51 +875,27 @@
                         continue;
                     }
                     
-                    const content = await readFileContent(file);
-                    
-                    if (files.length > 1) {
-                        // For multiple files, add file headers
-                        combinedContent += `// ===============================\n`;
-                        combinedContent += `// File: ${file.name}\n`;
-                        combinedContent += `// ===============================\n\n`;
-                        combinedContent += content;
-                        combinedContent += '\n\n';
-                    } else {
-                        // For single file, just add the content
-                        combinedContent = content;
-                    }
-                    
-                    fileCount++;
+                    validFiles.push(file);
                 }
                 
-                if (fileCount > 0) {
-                    // Ask user if they want to replace or append
-                    const currentContent = codeTextarea.value.trim();
-                    if (currentContent) {
-                        const action = confirm(
-                            `You have existing content in the textarea.\n\n` +
-                            `Click "OK" to REPLACE the existing content with the file(s).\n` +
-                            `Click "Cancel" to APPEND the file(s) to the existing content.`
-                        );
-                        
-                        if (action) {
-                            // Replace
-                            codeTextarea.value = combinedContent;
-                        } else {
-                            // Append
-                            codeTextarea.value = currentContent + '\n\n' + combinedContent;
-                        }
+                if (validFiles.length === 0) {
+                    throw new Error('No valid files to process');
+                }
+
+                // Check if multiple files and get user preference
+                if (validFiles.length > 1) {
+                    const multiFileMode = document.querySelector('input[name="multiFileMode"]:checked').value;
+                    
+                    if (multiFileMode === 'separate') {
+                        // Process each file separately and upload individually
+                        await processSeparateFiles(validFiles);
                     } else {
-                        // No existing content, just set the new content
-                        codeTextarea.value = combinedContent;
+                        // Combine files (existing behavior)
+                        await processCombinedFiles(validFiles);
                     }
-                    
-                    // Auto-resize textarea
-                    codeTextarea.style.height = 'auto';
-                    codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
-                    
-                    // Show success message
-                    showFileSuccessMessage(fileCount, files.length);
+                } else {
+                    // Single file
+                    await processCombinedFiles(validFiles);
                 }
                 
             } catch (error) {
@@ -830,6 +907,111 @@
                 // Clear file input
                 fileInput.value = '';
             }
+        }
+
+        async function processCombinedFiles(files) {
+            let combinedContent = '';
+            
+            for (let file of files) {
+                const content = await readFileContent(file);
+                
+                if (files.length > 1) {
+                    // For multiple files, add file headers
+                    combinedContent += `// ===============================\n`;
+                    combinedContent += `// File: ${file.name}\n`;
+                    combinedContent += `// ===============================\n\n`;
+                    combinedContent += content;
+                    combinedContent += '\n\n';
+                } else {
+                    // For single file, just add the content
+                    combinedContent = content;
+                }
+            }
+            
+            // Ask user if they want to replace or append
+            const currentContent = codeTextarea.value.trim();
+            if (currentContent) {
+                const action = confirm(
+                    `You have existing content in the textarea.\n\n` +
+                    `Click "OK" to REPLACE the existing content with the file(s).\n` +
+                    `Click "Cancel" to APPEND the file(s) to the existing content.`
+                );
+                
+                if (action) {
+                    // Replace
+                    codeTextarea.value = combinedContent;
+                } else {
+                    // Append
+                    codeTextarea.value = currentContent + '\n\n' + combinedContent;
+                }
+            } else {
+                // No existing content, just set the new content
+                codeTextarea.value = combinedContent;
+            }
+            
+            // Auto-resize textarea
+            codeTextarea.style.height = 'auto';
+            codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
+            
+            // Show success message
+            showFileSuccessMessage(files.length, files.length);
+        }
+
+        async function processSeparateFiles(files) {
+            // Clear textarea and show that we're uploading directly
+            codeTextarea.value = '';
+            
+            const results = [];
+            let successCount = 0;
+            let failCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const content = await readFileContent(file);
+                
+                try {
+                    // Upload each file separately
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            code: content,
+                            url: '', // Let it auto-generate
+                            edit_code: document.getElementById('edit_code').value
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        results.push({
+                            filename: file.name,
+                            url: data.url,
+                            success: true
+                        });
+                        successCount++;
+                    } else {
+                        results.push({
+                            filename: file.name,
+                            error: data.error,
+                            success: false
+                        });
+                        failCount++;
+                    }
+                } catch (error) {
+                    results.push({
+                        filename: file.name,
+                        error: error.message,
+                        success: false
+                    });
+                    failCount++;
+                }
+            }
+
+            // Show results for all files
+            showSeparateFilesResults(results, successCount, failCount);
         }
 
         function readFileContent(file) {
@@ -879,6 +1061,66 @@
                     result.style.display = 'none';
                 }
             }, 3000);
+        }
+
+        function showSeparateFilesResults(results, successCount, failCount) {
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            result.style.display = 'block';
+            
+            if (successCount > 0 && failCount === 0) {
+                result.className = 'result success';
+            } else if (successCount > 0 && failCount > 0) {
+                result.className = 'result success'; // Partial success
+            } else {
+                result.className = 'result error';
+            }
+            
+            let html = `<h3>📂 Separate File Upload Results</h3>`;
+            
+            if (successCount > 0) {
+                html += `<p style="margin-bottom: 15px;">✅ Successfully uploaded ${successCount} file(s):</p>`;
+                
+                results.forEach(result => {
+                    if (result.success) {
+                        html += `
+                            <div style="margin-bottom: 10px; padding: 10px; background: rgba(72, 187, 120, 0.1); border-radius: 8px;">
+                                <strong>📄 ${result.filename}</strong><br>
+                                <div style="margin-top: 5px;">
+                                    <a href="${result.url}" target="_blank" style="color: #38a169; text-decoration: none;">${result.url}</a>
+                                    <button class="copy-btn" onclick="copyToClipboard('${result.url}')" style="margin-left: 10px;">Copy</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            
+            if (failCount > 0) {
+                html += `<p style="margin: 15px 0; color: #e53e3e;">❌ Failed to upload ${failCount} file(s):</p>`;
+                
+                results.forEach(result => {
+                    if (!result.success) {
+                        html += `
+                            <div style="margin-bottom: 10px; padding: 10px; background: rgba(229, 62, 62, 0.1); border-radius: 8px;">
+                                <strong>📄 ${result.filename}</strong><br>
+                                <span style="color: #e53e3e; font-size: 0.9rem;">Error: ${result.error}</span>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            
+            const editCode = document.getElementById('edit_code').value;
+            if (editCode && successCount > 0) {
+                html += `<p style="margin-top: 15px; font-size: 0.9rem; background: rgba(102, 126, 234, 0.1); padding: 10px; border-radius: 8px;">
+                    💡 <strong>Edit Code:</strong> ${editCode} (same for all files)
+                    <button class="copy-btn" onclick="copyToClipboard('${editCode}')" style="margin-left: 10px;">Copy</button>
+                </p>`;
+            }
+            
+            resultContent.innerHTML = html;
         }
 
         // Theme toggle functionality
