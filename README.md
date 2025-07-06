@@ -1,6 +1,6 @@
 # 🚀 Host Code Online
 
-A fast, elegant web application for hosting and sharing code snippets online using rentry.co. No login required!
+A fast, barebones web application for hosting and sharing code snippets online using rentry.co. No login required!
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)
