@@ -1,0 +1,4 @@
+# Instructions
+I am building a tool to host code online on rentry.co
+The user pastes their code in. This program will upload it to rentry.co and return the url.
+Use rentry's API

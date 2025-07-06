@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Code Online</title>
+    <style>
+        :root {
+            /* Light mode colors */
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: #ffffff;
+            --text-color: #2d3748;
+            --text-secondary: #4a5568;
+            --input-bg: #ffffff;
+            --input-border: #e2e8f0;
+            --input-focus: #667eea;
+            --button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --success-bg: #c6f6d5;
+            --success-border: #38a169;
+            --error-bg: #fed7d7;
+            --error-border: #e53e3e;
+            --tooltip-bg: #2d3748;
+            --help-icon-bg: #a0aec0;
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-gradient-start: #2d3748;
+            --bg-gradient-end: #1a202c;
+            --container-bg: #1a202c;
+            --text-color: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --input-bg: #2d3748;
+            --input-border: #4a5568;
+            --input-focus: #667eea;
+            --button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --success-bg: #22543d;
+            --success-border: #38a169;
+            --error-bg: #742a2a;
+            --error-border: #e53e3e;
+            --tooltip-bg: #4a5568;
+            --help-icon-bg: #718096;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--container-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .theme-toggle {
+            background: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 20px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--input-focus);
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+
+        .theme-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle.rotate .theme-icon {
+            transform: rotate(180deg);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: var(--button-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .subtitle-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .subtitle-main {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .subtitle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--input-border);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        textarea {
+            min-height: 300px;
+            resize: vertical;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .optional-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .upload-btn {
+            flex: 2;
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .upload-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .format-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+        }
+
+        .format-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(72, 187, 120, 0.4);
+        }
+
+        .format-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .result.success {
+            background: var(--success-bg);
+            border: 2px solid var(--success-border);
+            color: var(--text-color);
+        }
+
+        .result.error {
+            background: var(--error-bg);
+            border: 2px solid var(--error-border);
+            color: var(--text-color);
+        }
+
+        .result h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .result-url {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .result-url a {
+            color: var(--input-focus);
+            text-decoration: none;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .copy-btn {
+            background: var(--input-focus);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.05);
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .info-notice {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 240px;
+            background: var(--tooltip-bg);
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            right: 0;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 15px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .field-with-tooltip {
+            position: relative;
+        }
+
+        .help-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--help-icon-bg);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: help;
+            transition: all 0.3s ease;
+        }
+
+        .help-icon:hover {
+            background: var(--input-focus);
+        }
+
+        /* File upload and drag-and-drop styles */
+        .code-input-container {
+            position: relative;
+        }
+
+        .file-input-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--input-bg);
+            border: 2px dashed var(--input-border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-section:hover {
+            border-color: var(--input-focus);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-upload-btn {
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            flex-shrink: 0;
+        }
+
+        .file-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-upload-btn:active {
+            transform: translateY(0);
+        }
+
+        .file-help-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .drag-drop-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.1);
+            border: 3px dashed var(--input-focus);
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            transition: all 0.3s ease;
+        }
+
+        .drag-drop-overlay.active {
+            display: flex;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .drag-drop-content {
+            text-align: center;
+            color: var(--input-focus);
+            font-weight: 600;
+        }
+
+        .drag-drop-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .drag-drop-content p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* File processing indicator */
+        .file-processing {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            z-index: 30;
+            display: none;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-processing.active {
+            display: flex;
+        }
+
+        .file-processing .spinner {
+            width: 24px;
+            height: 24px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .header-controls {
+                top: 15px;
+                right: 15px;
+            }
+
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-top: 30px;
+            }
+
+            .optional-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            .upload-btn, .format-btn {
+                flex: 1;
+            }
+
+            /* Mobile tooltip adjustments */
+            .tooltip .tooltiptext {
+                width: 200px;
+                font-size: 0.75rem;
+            }
+
+            .help-icon {
+                width: 18px;
+                height: 18px;
+                font-size: 11px;
+                right: 12px;
+            }
+
+            /* Mobile file upload adjustments */
+            .file-input-section {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+                text-align: center;
+            }
+
+            .file-upload-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+                width: 100%;
+            }
+
+            .drag-drop-icon {
+                font-size: 2.5rem;
+            }
+
+            .drag-drop-content p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-controls">
+            <button id="themeToggle" class="theme-toggle" title="Toggle dark/light mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+        <h1>🚀 Host Code Online</h1>
+        <div class="subtitle-container">
+            <p class="subtitle-main">Fastest way to host and share code (or really anything) online</p>
+            <p class="subtitle-badge">NO LOGIN REQUIRED</p>
+        </div>
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="code">Your Code</label>
+                <div class="code-input-container">
+                    <textarea id="code" placeholder="Paste your code here or drag & drop files..." required></textarea>
+                    <div class="drag-drop-overlay" id="dragDropOverlay">
+                        <div class="drag-drop-content">
+                            <div class="drag-drop-icon">📁</div>
+                            <p>Drop your file(s) here</p>
+                        </div>
+                    </div>
+                    <div class="file-processing" id="fileProcessing">
+                        <div class="spinner"></div>
+                        <span>Processing file(s)...</span>
+                    </div>
+                </div>
+                <div class="file-input-section">
+                    <input type="file" id="fileInput" accept=".txt,.js,.py,.html,.css,.json,.xml,.md,.sql,.cpp,.c,.java,.cs,.php,.rb,.go,.rs,.ts,.jsx,.tsx,.vue,.swift,.kt,.scala,.sh,.bat,.ps1,.yml,.yaml,.toml,.ini,.cfg,.conf" multiple>
+                    <button type="button" class="file-upload-btn" onclick="document.getElementById('fileInput').click()">
+                        📁 Choose File(s)
+                    </button>
+                    <span class="file-help-text">or drag & drop files above</span>
+                </div>
+            </div>
+
+            <div class="optional-fields">
+                <div class="form-group">
+                    <label for="url">Custom URL (Optional)</label>
+                    <div class="field-with-tooltip">
+                        <input type="text" id="url" placeholder="my-code or rentry.co/my-code">
+                        <div class="tooltip help-icon">
+                            ?
+                            <span class="tooltiptext">
+                                <strong>If empty:</strong> Auto-generates random URL<br>
+                                <strong>Accepts:</strong> "my-code" or full URLs like "rentry.co/my-code"
+                            </span>
+                        </div>
+                    </div>
+                    <p class="info-text">Will be: rentry.co/your-url</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_code">Edit Code (Optional)</label>
+                    <div class="field-with-tooltip">
+                        <input type="text" id="edit_code" placeholder="secret-password">
+                        <div class="tooltip help-icon">
+                            ?
+                            <span class="tooltiptext">
+                                <strong>If empty:</strong> May not be able to edit later<br>
+                                Recommended: Add custom edit code
+                            </span>
+                        </div>
+                    </div>
+                    <p class="info-text">Keep this to edit your code later</p>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button type="button" class="format-btn" id="formatBtn">
+                    <span class="format-btn-text">✨ Format Code</span>
+                    <div class="loading format-loading">
+                        <div class="spinner"></div>
+                        <span>Formatting...</span>
+                    </div>
+                </button>
+                <button type="submit" class="upload-btn">
+                    <span class="btn-text">Upload Code</span>
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span>Uploading...</span>
+                    </div>
+                </button>
+            </div>
+        </form>
+
+        <div class="info-notice">
+            <p>💡 <strong>Tip:</strong> Already have a rentry.co link? You can edit it by entering the URL and your edit code above!</p>
+        </div>
+
+        <div id="result" class="result">
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // File upload and drag-and-drop functionality
+        const fileInput = document.getElementById('fileInput');
+        const codeTextarea = document.getElementById('code');
+        const dragDropOverlay = document.getElementById('dragDropOverlay');
+        const fileProcessing = document.getElementById('fileProcessing');
+        const codeInputContainer = document.querySelector('.code-input-container');
+
+        // File input change handler
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag and drop event listeners
+        codeInputContainer.addEventListener('dragover', handleDragOver);
+        codeInputContainer.addEventListener('dragenter', handleDragEnter);
+        codeInputContainer.addEventListener('dragleave', handleDragLeave);
+        codeInputContainer.addEventListener('drop', handleDrop);
+
+        // Prevent default drag behaviors on the document
+        document.addEventListener('dragover', e => e.preventDefault());
+        document.addEventListener('drop', e => e.preventDefault());
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropOverlay.classList.add('active');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Only hide overlay if leaving the container completely
+            if (!codeInputContainer.contains(e.relatedTarget)) {
+                dragDropOverlay.classList.remove('active');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropOverlay.classList.remove('active');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFiles(files);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                processFiles(files);
+            }
+        }
+
+        async function processFiles(files) {
+            // Show processing indicator
+            fileProcessing.classList.add('active');
+            
+            try {
+                let combinedContent = '';
+                let fileCount = 0;
+                
+                for (let file of files) {
+                    // Check file size (limit to 1MB per file)
+                    if (file.size > 1024 * 1024) {
+                        alert(`File "${file.name}" is too large. Maximum size is 1MB per file.`);
+                        continue;
+                    }
+                    
+                    // Check file type
+                    if (!isValidFileType(file)) {
+                        alert(`File "${file.name}" is not a supported file type.`);
+                        continue;
+                    }
+                    
+                    const content = await readFileContent(file);
+                    
+                    if (files.length > 1) {
+                        // For multiple files, add file headers
+                        combinedContent += `// ===============================\n`;
+                        combinedContent += `// File: ${file.name}\n`;
+                        combinedContent += `// ===============================\n\n`;
+                        combinedContent += content;
+                        combinedContent += '\n\n';
+                    } else {
+                        // For single file, just add the content
+                        combinedContent = content;
+                    }
+                    
+                    fileCount++;
+                }
+                
+                if (fileCount > 0) {
+                    // Ask user if they want to replace or append
+                    const currentContent = codeTextarea.value.trim();
+                    if (currentContent) {
+                        const action = confirm(
+                            `You have existing content in the textarea.\n\n` +
+                            `Click "OK" to REPLACE the existing content with the file(s).\n` +
+                            `Click "Cancel" to APPEND the file(s) to the existing content.`
+                        );
+                        
+                        if (action) {
+                            // Replace
+                            codeTextarea.value = combinedContent;
+                        } else {
+                            // Append
+                            codeTextarea.value = currentContent + '\n\n' + combinedContent;
+                        }
+                    } else {
+                        // No existing content, just set the new content
+                        codeTextarea.value = combinedContent;
+                    }
+                    
+                    // Auto-resize textarea
+                    codeTextarea.style.height = 'auto';
+                    codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
+                    
+                    // Show success message
+                    showFileSuccessMessage(fileCount, files.length);
+                }
+                
+            } catch (error) {
+                console.error('Error processing files:', error);
+                alert('Error processing files: ' + error.message);
+            } finally {
+                // Hide processing indicator
+                fileProcessing.classList.remove('active');
+                // Clear file input
+                fileInput.value = '';
+            }
+        }
+
+        function readFileContent(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = e => reject(new Error('Failed to read file'));
+                reader.readAsText(file);
+            });
+        }
+
+        function isValidFileType(file) {
+            const validExtensions = [
+                '.txt', '.js', '.py', '.html', '.css', '.json', '.xml', '.md', '.sql',
+                '.cpp', '.c', '.java', '.cs', '.php', '.rb', '.go', '.rs', '.ts',
+                '.jsx', '.tsx', '.vue', '.swift', '.kt', '.scala', '.sh', '.bat',
+                '.ps1', '.yml', '.yaml', '.toml', '.ini', '.cfg', '.conf'
+            ];
+            
+            const fileName = file.name.toLowerCase();
+            return validExtensions.some(ext => fileName.endsWith(ext)) || 
+                   file.type.startsWith('text/') || 
+                   file.type === 'application/json' || 
+                   file.type === 'application/xml';
+        }
+
+        function showFileSuccessMessage(processedCount, totalCount) {
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            result.style.display = 'block';
+            result.className = 'result success';
+            
+            let message = `✅ Successfully loaded ${processedCount} file(s)`;
+            if (totalCount > processedCount) {
+                message += ` (${totalCount - processedCount} file(s) skipped due to size/type restrictions)`;
+            }
+            
+            resultContent.innerHTML = `
+                <h3>${message}</h3>
+                <p>Your code is now ready to upload!</p>
+            `;
+            
+            // Auto-hide success message after 3 seconds
+            setTimeout(() => {
+                if (result.className === 'result success') {
+                    result.style.display = 'none';
+                }
+            }, 3000);
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        
+        // Load saved theme or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Add rotation animation
+            themeToggle.classList.add('rotate');
+            setTimeout(() => themeToggle.classList.remove('rotate'), 300);
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+        }
+
+        // Format code functionality
+        document.getElementById('formatBtn').addEventListener('click', async function() {
+            const codeTextarea = document.getElementById('code');
+            const btn = document.getElementById('formatBtn');
+            const btnText = document.querySelector('.format-btn-text');
+            const loading = document.querySelector('.format-loading');
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+
+            if (!codeTextarea.value.trim()) {
+                // Show error for empty code
+                result.style.display = 'block';
+                result.className = 'result error';
+                resultContent.innerHTML = `
+                    <h3>❌ Format failed</h3>
+                    <p>Please enter some code to format</p>
+                `;
+                return;
+            }
+
+            // Show loading state
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            loading.style.display = 'flex';
+            result.style.display = 'none';
+
+            const formData = {
+                code: codeTextarea.value,
+                language: null // Let the backend detect the language
+            };
+
+            try {
+                const response = await fetch('/format', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                // Reset button state
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+
+                // Show result
+                result.style.display = 'block';
+
+                if (data.success) {
+                    // Update the textarea with formatted code
+                    codeTextarea.value = data.formatted_code;
+                    
+                    // Auto-resize textarea
+                    codeTextarea.style.height = 'auto';
+                    codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
+                    
+                    result.className = 'result success';
+                    resultContent.innerHTML = `
+                        <h3>✅ Code formatted successfully!</h3>
+                        <p>${data.message}</p>
+                    `;
+                } else {
+                    result.className = 'result error';
+                    resultContent.innerHTML = `
+                        <h3>❌ Format failed</h3>
+                        <p>${data.error}</p>
+                    `;
+                }
+            } catch (error) {
+                // Reset button state
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+
+                // Show error
+                result.style.display = 'block';
+                result.className = 'result error';
+                resultContent.innerHTML = `
+                    <h3>❌ Format failed</h3>
+                    <p>Network error: ${error.message}</p>
+                `;
+            }
+        });
+
+        // Upload form functionality
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btn = document.querySelector('.upload-btn');
+            const btnText = document.querySelector('.btn-text');
+            const loading = document.querySelector('.loading');
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+
+            const formData = {
+                code: document.getElementById('code').value,
+                url: document.getElementById('url').value,
+                edit_code: document.getElementById('edit_code').value
+            };
+
+            // Warn user if no edit code is provided
+            if (!formData.edit_code.trim()) {
+                const proceed = confirm('⚠️ Warning: No edit code provided!\n\nWithout an edit code, you won\'t be able to edit this paste later.\n\nDo you want to continue anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+
+            // Show loading state
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            loading.style.display = 'flex';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                // Reset button state
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+
+                // Show result
+                result.style.display = 'block';
+
+                if (data.success) {
+                    result.className = 'result success';
+                    resultContent.innerHTML = `
+                        <h3>✅ Code uploaded successfully!</h3>
+                        <div class="result-url">
+                            <strong>URL:</strong> <a href="${data.url}" target="_blank">${data.url}</a>
+                            <button class="copy-btn" onclick="copyToClipboard('${data.url}')">Copy</button>
+                        </div>
+                        ${data.edit_code ? `
+                        <div class="result-url">
+                            <strong>Edit Code:</strong> ${data.edit_code}
+                            <button class="copy-btn" onclick="copyToClipboard('${data.edit_code}')">Copy</button>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 0.9rem;">💡 Save your edit code to modify your code later!</p>
+                        ` : `
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #f56565;">⚠️ No edit code - you can't edit this paste later!</p>
+                        `}
+                    `;
+                } else {
+                    result.className = 'result error';
+                    resultContent.innerHTML = `
+                        <h3>❌ Upload failed</h3>
+                        <p>${data.error}</p>
+                    `;
+                }
+            } catch (error) {
+                // Reset button state
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+
+                // Show error
+                result.style.display = 'block';
+                result.className = 'result error';
+                resultContent.innerHTML = `
+                    <h3>❌ Upload failed</h3>
+                    <p>Network error: ${error.message}</p>
+                `;
+            }
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Could add a toast notification here
+                console.log('Copied to clipboard!');
+            });
+        }
+
+        // Auto-resize textarea
+        document.getElementById('code').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.max(300, this.scrollHeight) + 'px';
+        });
+    </script>
+</body>
+</html> 
