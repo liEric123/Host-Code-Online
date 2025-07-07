@@ -11,7 +11,9 @@ A fast, barebones web application for hosting and sharing code snippets online u
 - **🎯 Zero Setup**: No registration or login required
 - **📁 File Upload**: Upload code files directly from your computer
 - **🎨 Drag & Drop**: Simply drag files onto the interface
-- **📂 Multi-File Options**: Choose to combine files into one paste or create separate pastes
+- **👁️ Smart Preview**: Review and select files before uploading
+- **📂 Flexible Upload Modes**: Choose between combining files or creating separate pastes AFTER upload
+- **✅ Selective Upload**: Check/uncheck individual files to upload only what you need
 - **🌙 Dark Mode**: Built-in light/dark theme toggle
 - **✨ Code Formatting**: Automatic code formatting for popular languages
 - **🔗 Custom URLs**: Create memorable URLs for your code snippets
@@ -45,8 +47,8 @@ A fast, barebones web application for hosting and sharing code snippets online u
 1. **Manual Input**: Paste your code into the textarea
 2. **File Upload**: Click "📁 Choose File(s)" to select files
 3. **Drag & Drop**: Drag files directly onto the textarea
-4. **Multi-File Mode**: Choose to combine files or create separate pastes (when uploading multiple files)
-5. **Upload**: Click "Upload Code" to get your rentry.co URL(s)
+4. **Multi-File Preview**: Review your files, select which ones to upload, and choose upload mode
+5. **Upload**: Click "Upload Selected Files" to get your rentry.co URL(s)
 
 ## 🔧 Supported Languages
 

@@ -23,6 +23,14 @@
             --error-border: #e53e3e;
             --tooltip-bg: #2d3748;
             --help-icon-bg: #a0aec0;
+            /* Secondary button colors */
+            --secondary-btn-bg: #f7fafc;
+            --secondary-btn-text: #4a5568;
+            --secondary-btn-border: #e2e8f0;
+            --secondary-btn-shadow: rgba(0, 0, 0, 0.1);
+            --secondary-btn-hover-bg: #edf2f7;
+            --secondary-btn-hover-border: #cbd5e0;
+            --secondary-btn-hover-shadow: rgba(0, 0, 0, 0.15);
         }
 
         [data-theme="dark"] {
@@ -43,6 +51,14 @@
             --error-border: #e53e3e;
             --tooltip-bg: #4a5568;
             --help-icon-bg: #718096;
+            /* Secondary button colors - dark mode */
+            --secondary-btn-bg: #4a5568;
+            --secondary-btn-text: #f7fafc;
+            --secondary-btn-border: #718096;
+            --secondary-btn-shadow: rgba(0, 0, 0, 0.4);
+            --secondary-btn-hover-bg: #2d3748;
+            --secondary-btn-hover-border: #667eea;
+            --secondary-btn-hover-shadow: rgba(0, 0, 0, 0.6);
         }
 
         * {
@@ -99,7 +115,7 @@
         }
 
         .theme-icon {
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
 
         .theme-toggle.rotate .theme-icon {
@@ -532,6 +548,328 @@
             transform: translateY(-1px);
         }
 
+        /* File Preview Styles */
+        .file-preview-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .file-preview-section.active {
+            display: block;
+        }
+
+        .file-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .file-preview-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .file-preview-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .preview-btn {
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .preview-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .preview-btn.secondary {
+            background: var(--secondary-btn-bg);
+            color: var(--secondary-btn-text);
+            border: 2px solid var(--secondary-btn-border);
+            box-shadow: 0 2px 8px var(--secondary-btn-shadow);
+        }
+
+        .preview-btn.secondary:hover {
+            background: var(--secondary-btn-hover-bg);
+            border-color: var(--secondary-btn-hover-border);
+            box-shadow: 0 4px 12px var(--secondary-btn-hover-shadow);
+        }
+
+        .file-preview-item {
+            margin-bottom: 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .file-preview-item:hover {
+            border-color: var(--input-focus);
+        }
+
+        .file-preview-item.selected {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .file-preview-header-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-preview-header-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .file-preview-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--input-focus);
+        }
+
+        .file-preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .file-preview-name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .file-preview-size {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .file-preview-toggle {
+            background: var(--secondary-btn-bg);
+            border: 1px solid var(--secondary-btn-border);
+            color: var(--secondary-btn-text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .file-preview-toggle:hover {
+            background: var(--secondary-btn-hover-bg);
+            border-color: var(--secondary-btn-hover-border);
+            transform: translateY(-1px);
+        }
+
+        .file-preview-toggle:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .file-preview-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .file-preview-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .file-preview-content.expanded {
+            max-height: 400px;
+        }
+
+        .file-preview-code {
+            padding: 15px;
+            background: var(--container-bg);
+            border-top: 1px solid var(--input-border);
+        }
+
+        .file-preview-code pre {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        [data-theme="dark"] .file-preview-code pre {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .select-all-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+        }
+
+        .select-all-controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .upload-mode-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(102, 126, 234, 0.02));
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .upload-mode-section:hover {
+            border-color: var(--input-focus);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-mode-section h4 {
+            margin: 0 0 16px 0;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-mode-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .upload-option {
+            position: relative;
+            background: var(--container-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .upload-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .upload-option:hover::before {
+            left: 100%;
+        }
+
+        .upload-option:hover {
+            border-color: var(--input-focus);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .upload-option.selected {
+            border-color: var(--input-focus);
+            background: rgba(102, 126, 234, 0.08);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+        }
+
+        .upload-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .upload-option-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .upload-option-icon {
+            font-size: 1.3rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-option.selected .upload-option-icon {
+            background: var(--input-focus);
+            color: white;
+        }
+
+        .upload-option-title {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .upload-option-description {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-left: 42px;
+        }
+
+        .upload-option.selected .upload-option-title {
+            color: var(--input-focus);
+        }
+
         .drag-drop-overlay {
             position: absolute;
             top: 0;
@@ -672,6 +1010,88 @@
             .radio-option {
                 justify-content: flex-start;
             }
+
+            /* Mobile file preview adjustments */
+            .file-preview-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .file-preview-actions {
+                order: -1;
+                justify-content: stretch;
+                flex-wrap: wrap;
+            }
+
+            .preview-btn {
+                flex: 1;
+                padding: 12px 16px;
+                min-width: 120px;
+            }
+
+            .select-all-controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .file-preview-header-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .file-preview-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .file-preview-toggle {
+                align-self: center;
+            }
+
+            .file-preview-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 6px;
+            }
+
+            .file-preview-buttons .file-preview-toggle {
+                width: 100%;
+                text-align: center;
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+
+            .upload-mode-section {
+                margin: 15px 0;
+                padding: 16px;
+            }
+
+            .upload-mode-options {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .upload-option {
+                padding: 14px;
+            }
+
+            .upload-option-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 1.1rem;
+            }
+
+            .upload-option-title {
+                font-size: 0.9rem;
+            }
+
+            .upload-option-description {
+                font-size: 0.8rem;
+                margin-left: 38px;
+            }
         }
     </style>
 </head>
@@ -779,6 +1199,52 @@
             <p>💡 <strong>Tip:</strong> Already have a rentry.co link? You can edit it by entering the URL and your edit code above!</p>
         </div>
 
+        <!-- File Preview Section -->
+        <div class="file-preview-section" id="filePreviewSection">
+            <div class="file-preview-header">
+                <h3 class="file-preview-title">📋 Review Files Before Upload</h3>
+                            <div class="file-preview-actions">
+                <button type="button" class="preview-btn secondary" onclick="cancelFilePreview()">Cancel</button>
+                <button type="button" class="preview-btn secondary" onclick="formatAllFiles()">✨ Format All</button>
+                <button type="button" class="preview-btn" onclick="uploadSelectedFiles()">Upload Selected Files</button>
+            </div>
+            </div>
+            
+            <div class="select-all-controls">
+                <label>
+                    <input type="checkbox" id="selectAllFiles" onchange="toggleSelectAll()">
+                    Select All Files
+                </label>
+                <span id="selectedFileCount" class="file-preview-size">0 files selected</span>
+            </div>
+            
+            <div class="upload-mode-section">
+                <h4>📦 Upload Mode</h4>
+                <div class="upload-mode-options">
+                    <div class="upload-option selected" onclick="selectUploadMode('combine', this)">
+                        <input type="radio" name="previewUploadMode" value="combine" checked>
+                        <div class="upload-option-header">
+                            <div class="upload-option-icon">📋</div>
+                            <div class="upload-option-title">Combine into one paste</div>
+                        </div>
+                        <div class="upload-option-description">All files merged into a single rentry.co link with file headers</div>
+                    </div>
+                    <div class="upload-option" onclick="selectUploadMode('separate', this)">
+                        <input type="radio" name="previewUploadMode" value="separate">
+                        <div class="upload-option-header">
+                            <div class="upload-option-icon">🗂️</div>
+                            <div class="upload-option-title">Create separate pastes</div>
+                        </div>
+                        <div class="upload-option-description">Each file gets its own individual rentry.co link</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="filePreviewList">
+                <!-- File preview items will be inserted here -->
+            </div>
+        </div>
+
         <div id="result" class="result">
             <div id="resultContent"></div>
         </div>
@@ -847,13 +1313,9 @@
         }
 
         async function processFiles(files) {
-            // Show/hide multi-file options based on file count
+            // Hide multi-file options (we'll show them in preview instead)
             const multiFileOptions = document.getElementById('multiFileOptions');
-            if (files.length > 1) {
-                multiFileOptions.style.display = 'block';
-            } else {
-                multiFileOptions.style.display = 'none';
-            }
+            multiFileOptions.style.display = 'none';
 
             // Show processing indicator
             fileProcessing.classList.add('active');
@@ -882,20 +1344,12 @@
                     throw new Error('No valid files to process');
                 }
 
-                // Check if multiple files and get user preference
+                // For multiple files, always go to preview
                 if (validFiles.length > 1) {
-                    const multiFileMode = document.querySelector('input[name="multiFileMode"]:checked').value;
-                    
-                    if (multiFileMode === 'separate') {
-                        // Process each file separately and upload individually
-                        await processSeparateFiles(validFiles);
-                    } else {
-                        // Combine files (existing behavior)
-                        await processCombinedFiles(validFiles);
-                    }
+                    await showMultiFilePreview(validFiles);
                 } else {
-                    // Single file
-                    await processCombinedFiles(validFiles);
+                    // Single file - process directly
+                    await processSingleFile(validFiles[0]);
                 }
                 
             } catch (error) {
@@ -909,44 +1363,30 @@
             }
         }
 
-        async function processCombinedFiles(files) {
-            let combinedContent = '';
-            
-            for (let file of files) {
-                const content = await readFileContent(file);
-                
-                if (files.length > 1) {
-                    // For multiple files, add file headers
-                    combinedContent += `// ===============================\n`;
-                    combinedContent += `// File: ${file.name}\n`;
-                    combinedContent += `// ===============================\n\n`;
-                    combinedContent += content;
-                    combinedContent += '\n\n';
-                } else {
-                    // For single file, just add the content
-                    combinedContent = content;
-                }
-            }
+
+
+        async function processSingleFile(file) {
+            const content = await readFileContent(file);
             
             // Ask user if they want to replace or append
             const currentContent = codeTextarea.value.trim();
             if (currentContent) {
                 const action = confirm(
                     `You have existing content in the textarea.\n\n` +
-                    `Click "OK" to REPLACE the existing content with the file(s).\n` +
-                    `Click "Cancel" to APPEND the file(s) to the existing content.`
+                    `Click "OK" to REPLACE the existing content with the file.\n` +
+                    `Click "Cancel" to APPEND the file to the existing content.`
                 );
                 
                 if (action) {
                     // Replace
-                    codeTextarea.value = combinedContent;
+                    codeTextarea.value = content;
                 } else {
                     // Append
-                    codeTextarea.value = currentContent + '\n\n' + combinedContent;
+                    codeTextarea.value = currentContent + '\n\n' + content;
                 }
             } else {
                 // No existing content, just set the new content
-                codeTextarea.value = combinedContent;
+                codeTextarea.value = content;
             }
             
             // Auto-resize textarea
@@ -954,47 +1394,326 @@
             codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
             
             // Show success message
-            showFileSuccessMessage(files.length, files.length);
+            showFileSuccessMessage(1, 1);
         }
 
-        async function processSeparateFiles(files) {
-            // Clear textarea and show that we're uploading directly
+        async function showMultiFilePreview(files) {
+            // Clear textarea
             codeTextarea.value = '';
             
+            // Load file contents and show preview
+            const fileData = [];
+            
+            for (let file of files) {
+                const content = await readFileContent(file);
+                fileData.push({
+                    file: file,
+                    content: content,
+                    filename: file.name,
+                    size: formatFileSize(file.size),
+                    selected: true // Default to selected
+                });
+            }
+            
+            // Store file data globally for upload later
+            window.previewFileData = fileData;
+            
+            // Show file preview section
+            showFilePreview(fileData);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function showFilePreview(fileData) {
+            const previewSection = document.getElementById('filePreviewSection');
+            const previewList = document.getElementById('filePreviewList');
+            
+            // Clear existing preview
+            previewList.innerHTML = '';
+            
+            // Create preview items
+            fileData.forEach((fileInfo, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'file-preview-item selected';
+                previewItem.innerHTML = `
+                    <div class="file-preview-header-item" onclick="toggleFileContent(${index})">
+                        <div class="file-preview-left">
+                            <input type="checkbox" class="file-checkbox" checked 
+                                   onchange="toggleFileSelection(${index})" 
+                                   onclick="event.stopPropagation()">
+                            <div class="file-preview-info">
+                                <div class="file-preview-name">📄 ${fileInfo.filename}</div>
+                                <div class="file-preview-size">${fileInfo.size}</div>
+                            </div>
+                        </div>
+                        <div class="file-preview-buttons">
+                            <button class="file-preview-toggle" onclick="event.stopPropagation(); toggleFileContent(${index})">
+                                👁️ View Code
+                            </button>
+                            <button class="file-preview-toggle" onclick="event.stopPropagation(); formatSingleFile(${index})" title="Format this file">
+                                ✨ Format
+                            </button>
+                        </div>
+                    </div>
+                    <div class="file-preview-content" id="fileContent${index}">
+                        <div class="file-preview-code">
+                            <pre>${escapeHtml(fileInfo.content)}</pre>
+                        </div>
+                    </div>
+                `;
+                previewList.appendChild(previewItem);
+            });
+            
+            // Update counters
+            updateSelectedFileCount();
+            
+            // Show preview section
+            previewSection.classList.add('active');
+            
+            // Scroll to preview section
+            previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function toggleFileContent(index) {
+            const content = document.getElementById(`fileContent${index}`);
+            const button = content.parentElement.querySelector('.file-preview-toggle');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                button.textContent = '👁️ View Code';
+            } else {
+                content.classList.add('expanded');
+                button.textContent = '🙈 Hide Code';
+            }
+        }
+
+        function toggleFileSelection(index) {
+            const checkbox = event.target;
+            const previewItem = checkbox.closest('.file-preview-item');
+            
+            if (checkbox.checked) {
+                previewItem.classList.add('selected');
+                window.previewFileData[index].selected = true;
+            } else {
+                previewItem.classList.remove('selected');
+                window.previewFileData[index].selected = false;
+            }
+            
+            updateSelectedFileCount();
+        }
+
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAllFiles');
+            const allCheckboxes = document.querySelectorAll('.file-checkbox');
+            const allItems = document.querySelectorAll('.file-preview-item');
+            
+            allCheckboxes.forEach((checkbox, index) => {
+                checkbox.checked = selectAllCheckbox.checked;
+                window.previewFileData[index].selected = selectAllCheckbox.checked;
+                
+                if (selectAllCheckbox.checked) {
+                    allItems[index].classList.add('selected');
+                } else {
+                    allItems[index].classList.remove('selected');
+                }
+            });
+            
+            updateSelectedFileCount();
+        }
+
+        function updateSelectedFileCount() {
+            const selectedCount = window.previewFileData.filter(file => file.selected).length;
+            const totalCount = window.previewFileData.length;
+            
+            document.getElementById('selectedFileCount').textContent = 
+                `${selectedCount} of ${totalCount} files selected`;
+            
+            // Update select all checkbox state
+            const selectAllCheckbox = document.getElementById('selectAllFiles');
+            if (selectedCount === 0) {
+                selectAllCheckbox.indeterminate = false;
+                selectAllCheckbox.checked = false;
+            } else if (selectedCount === totalCount) {
+                selectAllCheckbox.indeterminate = false;
+                selectAllCheckbox.checked = true;
+            } else {
+                selectAllCheckbox.indeterminate = true;
+            }
+        }
+
+        function cancelFilePreview() {
+            const previewSection = document.getElementById('filePreviewSection');
+            previewSection.classList.remove('active');
+            
+            // Clear stored data
+            window.previewFileData = null;
+            
+            // Clear file input
+            fileInput.value = '';
+            
+            // Hide multi-file options
+            document.getElementById('multiFileOptions').style.display = 'none';
+        }
+
+        async function uploadSelectedFiles() {
+            const selectedFiles = window.previewFileData.filter(file => file.selected);
+            
+            if (selectedFiles.length === 0) {
+                alert('Please select at least one file to upload.');
+                return;
+            }
+            
+            // Get upload mode
+            const uploadMode = document.querySelector('input[name="previewUploadMode"]:checked').value;
+            
+            // Hide preview section
+            const previewSection = document.getElementById('filePreviewSection');
+            previewSection.classList.remove('active');
+            
+            // Show loading
+            fileProcessing.classList.add('active');
+            
+            try {
+                if (uploadMode === 'combine') {
+                    // Combine files mode
+                    await processCombinedUpload(selectedFiles);
+                } else {
+                    // Separate files mode
+                    await processSeparateUpload(selectedFiles);
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Error uploading files: ' + error.message);
+            } finally {
+                // Hide loading
+                fileProcessing.classList.remove('active');
+                
+                // Clear stored data
+                window.previewFileData = null;
+                
+                // Clear file input
+                fileInput.value = '';
+                
+                // Hide multi-file options
+                document.getElementById('multiFileOptions').style.display = 'none';
+            }
+        }
+
+        async function processCombinedUpload(selectedFiles) {
+            // Combine selected files
+            let combinedContent = '';
+            
+            for (let fileInfo of selectedFiles) {
+                if (selectedFiles.length > 1) {
+                    // For multiple files, add file headers
+                    combinedContent += `// ===============================\n`;
+                    combinedContent += `// File: ${fileInfo.filename}\n`;
+                    combinedContent += `// ===============================\n\n`;
+                    combinedContent += fileInfo.content;
+                    combinedContent += '\n\n';
+                } else {
+                    // For single file, just add the content
+                    combinedContent = fileInfo.content;
+                }
+            }
+            
+            // Get edit code from form field - ensure it's not undefined
+            const editCodeField = document.getElementById('edit_code');
+            const editCode = editCodeField && editCodeField.value ? editCodeField.value.trim() : '';
+            
+            // Upload combined content
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: combinedContent,
+                        url: document.getElementById('url').value || '',
+                        edit_code: editCode
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success result
+                    const result = document.getElementById('result');
+                    const resultContent = document.getElementById('resultContent');
+                    
+                    result.style.display = 'block';
+                    result.className = 'result success';
+                    resultContent.innerHTML = `
+                        <h3>✅ Combined files uploaded successfully!</h3>
+                        <div class="result-url">
+                            <strong>URL:</strong> <a href="${data.url}" target="_blank">${data.url}</a>
+                            <button class="copy-btn" onclick="copyToClipboard('${data.url}')">Copy</button>
+                        </div>
+                        ${data.edit_code ? `
+                        <div class="result-url">
+                            <strong>Edit Code:</strong> ${data.edit_code}
+                            <button class="copy-btn" onclick="copyToClipboard('${data.edit_code}')">Copy</button>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 0.9rem;">💡 Save your edit code to modify your code later!</p>
+                        ` : `
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #f56565;">⚠️ No edit code - you can't edit this paste later!</p>
+                        `}
+                    `;
+                    
+                    // Clear form
+                    document.getElementById('url').value = '';
+                    // Set edit code if it was empty and we got one back from server
+                    const editCodeField = document.getElementById('edit_code');
+                    if (editCodeField && (!editCodeField.value || editCodeField.value.trim() === '')) {
+                        editCodeField.value = data.edit_code || '';
+                    }
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                throw new Error('Failed to upload combined files: ' + error.message);
+            }
+        }
+
+        async function processSeparateUpload(selectedFiles) {
             const results = [];
             let successCount = 0;
             let failCount = 0;
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const content = await readFileContent(file);
-                
+            for (let fileInfo of selectedFiles) {
                 try {
-                    // Upload each file separately
+                    // Upload each selected file separately
                     const response = await fetch('/upload', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({
-                            code: content,
-                            url: '', // Let it auto-generate
-                            edit_code: document.getElementById('edit_code').value
-                        })
+                                            body: JSON.stringify({
+                        code: fileInfo.content,
+                        url: '', // Let it auto-generate
+                        edit_code: document.getElementById('edit_code').value || ''
+                    })
                     });
 
                     const data = await response.json();
                     
                     if (data.success) {
                         results.push({
-                            filename: file.name,
+                            filename: fileInfo.filename,
                             url: data.url,
                             success: true
                         });
                         successCount++;
                     } else {
                         results.push({
-                            filename: file.name,
+                            filename: fileInfo.filename,
                             error: data.error,
                             success: false
                         });
@@ -1002,7 +1721,7 @@
                     }
                 } catch (error) {
                     results.push({
-                        filename: file.name,
+                        filename: fileInfo.filename,
                         error: error.message,
                         success: false
                     });
@@ -1010,8 +1729,186 @@
                 }
             }
 
-            // Show results for all files
+            // Show results for selected files
             showSeparateFilesResults(results, successCount, failCount);
+        }
+
+        function selectUploadMode(mode, element) {
+            // Remove selected class from all options
+            document.querySelectorAll('.upload-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Update radio button
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+            
+            // Add a subtle animation
+            element.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                element.style.transform = '';
+            }, 150);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function formatSingleFile(index) {
+            const fileData = window.previewFileData[index];
+            const button = document.querySelector(`button[onclick="event.stopPropagation(); formatSingleFile(${index})"]`);
+            
+            if (!fileData || !fileData.content.trim()) {
+                alert('No code to format in this file.');
+                return;
+            }
+
+            // Show loading state
+            const originalText = button.textContent;
+            button.textContent = '⏳ Formatting...';
+            button.disabled = true;
+
+            try {
+                const response = await fetch('/format', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: fileData.content,
+                        language: null // Let backend detect
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update the file content
+                    window.previewFileData[index].content = data.formatted_code;
+                    
+                    // Update the preview display if it's expanded
+                    const previewContent = document.getElementById(`fileContent${index}`);
+                    if (previewContent && previewContent.classList.contains('expanded')) {
+                        const preElement = previewContent.querySelector('pre');
+                        if (preElement) {
+                            preElement.textContent = data.formatted_code;
+                        }
+                    }
+                    
+                    // Show success feedback
+                    button.textContent = '✅ Formatted';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 2000);
+                } else {
+                    alert('Format failed: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Format error:', error);
+                alert('Format failed: ' + error.message);
+            } finally {
+                button.disabled = false;
+                if (button.textContent === '⏳ Formatting...') {
+                    button.textContent = originalText;
+                }
+            }
+        }
+
+        async function formatAllFiles() {
+            const button = document.querySelector('button[onclick="formatAllFiles()"]');
+            const selectedFiles = window.previewFileData.filter(file => file.selected);
+            
+            if (selectedFiles.length === 0) {
+                alert('Please select at least one file to format.');
+                return;
+            }
+
+            // Show loading state
+            const originalText = button.textContent;
+            button.textContent = '⏳ Formatting...';
+            button.disabled = true;
+
+            let successCount = 0;
+            let failCount = 0;
+
+            try {
+                for (let i = 0; i < window.previewFileData.length; i++) {
+                    const fileData = window.previewFileData[i];
+                    
+                    // Only format selected files
+                    if (!fileData.selected || !fileData.content.trim()) {
+                        continue;
+                    }
+
+                    try {
+                        const response = await fetch('/format', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                code: fileData.content,
+                                language: null // Let backend detect
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            // Update the file content
+                            window.previewFileData[i].content = data.formatted_code;
+                            
+                            // Update the preview display if it's expanded
+                            const previewContent = document.getElementById(`fileContent${i}`);
+                            if (previewContent && previewContent.classList.contains('expanded')) {
+                                const preElement = previewContent.querySelector('pre');
+                                if (preElement) {
+                                    preElement.textContent = data.formatted_code;
+                                }
+                            }
+                            
+                            successCount++;
+                        } else {
+                            console.error(`Format failed for ${fileData.filename}:`, data.error);
+                            failCount++;
+                        }
+                    } catch (error) {
+                        console.error(`Format error for ${fileData.filename}:`, error);
+                        failCount++;
+                    }
+                }
+
+                // Show results
+                if (successCount > 0 && failCount === 0) {
+                    button.textContent = '✅ All Formatted';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 3000);
+                } else if (successCount > 0 && failCount > 0) {
+                    button.textContent = `✅ ${successCount} ❌ ${failCount}`;
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 3000);
+                } else {
+                    button.textContent = '❌ Format Failed';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('Format all error:', error);
+                alert('Format failed: ' + error.message);
+            } finally {
+                button.disabled = false;
+                if (button.textContent === '⏳ Formatting...') {
+                    button.textContent = originalText;
+                }
+            }
         }
 
         function readFileContent(file) {
@@ -1132,22 +2029,49 @@
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
         
+        let isThemeChanging = false;
+        
         themeToggle.addEventListener('click', () => {
+            if (isThemeChanging) return; // Prevent rapid clicking
+            
+            isThemeChanging = true;
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
             // Add rotation animation
             themeToggle.classList.add('rotate');
-            setTimeout(() => themeToggle.classList.remove('rotate'), 300);
+            themeToggle.style.pointerEvents = 'none'; // Disable clicking during animation
             
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
+            // Fade out content
+            document.body.style.transition = 'opacity 0.25s ease';
+            document.body.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                // Change theme
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                // Fade back in
+                document.body.style.opacity = '1';
+                
+                setTimeout(() => {
+                    // Clean up
+                    themeToggle.classList.remove('rotate');
+                    themeToggle.style.pointerEvents = '';
+                    document.body.style.transition = '';
+                    isThemeChanging = false;
+                }, 250);
+            }, 250);
         });
         
         function updateThemeIcon(theme) {
-            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-            themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+            themeIcon.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+                themeIcon.style.transform = 'scale(1)';
+                themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+            }, 125);
         }
 
         // Format code functionality
