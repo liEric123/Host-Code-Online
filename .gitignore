@@ -185,4 +185,7 @@ cython_debug/
 .AppleDesktop
 Network Trash Folder
 Temporary Items
-.apdisk 
+.apdisk
+
+# Cursor IDE rules
+.cursorrules
