@@ -558,7 +558,15 @@ uploader = RentryUploader()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('landing.html')
+
+@app.route('/paste')
+def paste():
+    return render_template('paste.html')
+
+@app.route('/files')
+def files():
+    return render_template('files.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -623,4 +631,4 @@ def format_code():
         return jsonify({"error": f"Server error: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001) 
+    app.run(debug=True, host='0.0.0.0', port=8000) 

@@ -1,72 +1,61 @@
 # 🚀 Host Code Online
 
-A fast, barebones web application for hosting and sharing code snippets online using rentry.co. No login required!
+Fast, clean web app for sharing code snippets via rentry.co. No registration required.
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
-![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)
+![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## ✨ Features
 
-- **🎯 Zero Setup**: No registration or login required
-- **📁 File Upload**: Upload code files directly from your computer
-- **🎨 Drag & Drop**: Simply drag files onto the interface
-- **👁️ Smart Preview**: Review and select files before uploading
-- **📂 Flexible Upload Modes**: Choose between combining files or creating separate pastes AFTER upload
-- **✅ Selective Upload**: Check/uncheck individual files to upload only what you need
-- **🌙 Dark Mode**: Built-in light/dark theme toggle
-- **✨ Code Formatting**: Automatic code formatting for popular languages
-- **🔗 Custom URLs**: Create memorable URLs for your code snippets
-- **📱 Mobile Friendly**: Works on all devices
+- **📄 Single Paste**: Quick code sharing with file upload support
+- **📂 Multi-File Upload**: Advanced file management with preview system
+- **🎯 Smart Upload Modes**: Combine files or create separate pastes
+- **✨ Code Formatting**: Auto-format code before uploading
+- **🔒 Security Options**: Write-once pastes or custom edit codes
+- **🌙 Dark/Light Mode**: Built-in theme toggle
+- **📱 Mobile Friendly**: Responsive design for all devices
 
 ## 🚀 Quick Start
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/liEric123/Host-Code-Online.git
-   cd Host-Code-Online
-   ```
+```bash
+git clone https://github.com/liEric123/Host-Code-Online.git
+cd Host-Code-Online
+pip install -r requirements.txt
+python3 app.py
+```
 
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run the application**
-   ```bash
-   python3 app.py
-   ```
-
-4. **Open your browser**
-   ```
-   http://localhost:5001
-   ```
+Open: `http://localhost:8000`
 
 ## 🎮 How to Use
 
-1. **Manual Input**: Paste your code into the textarea
-2. **File Upload**: Click "📁 Choose File(s)" to select files
-3. **Drag & Drop**: Drag files directly onto the textarea
-4. **Multi-File Preview**: Review your files, select which ones to upload, and choose upload mode
-5. **Upload**: Click "Upload Selected Files" to get your rentry.co URL(s)
+**Landing Page** → Choose your upload method:
+- **Single Paste**: Perfect for quick snippets or single files
+- **Multi-File Upload**: Advanced features for complex projects
 
-## 🔧 Supported Languages
+**Single Paste** (`/paste`):
+- Type/paste code or upload a file
+- Optional custom URL and edit code
+- Format and upload
 
-Python, JavaScript, TypeScript, HTML, CSS, JSON, C++, C, Java, C#, PHP, Ruby, Go, Rust, Swift, Kotlin, Scala, YAML, SQL, Markdown, and more.
+**Multi-File Upload** (`/files`):
+- Upload multiple files via button or drag & drop
+- Preview and select files to upload
+- Choose: combine into one paste or create separate pastes
+- Set edit codes individually or use same for all
+
+## 🔧 Supported File Types
+
+Code files: `.py` `.js` `.ts` `.html` `.css` `.json` `.cpp` `.java` `.php` `.rb` `.go` `.rs` `.md` `.sql` `.yml` and more.
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [rentry.co](https://rentry.co) for providing the hosting service
-- [Flask](https://flask.palletsprojects.com/) for the web framework
+MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
-⭐ **Star this repo if you find it helpful!** 
+⭐ **Star this repo if it's helpful!** 

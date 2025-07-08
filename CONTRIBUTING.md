@@ -1,76 +1,56 @@
 # Contributing to Host Code Online
 
-Thanks for your interest in contributing! We welcome all contributions.
+Thanks for your interest! We welcome all contributions.
 
 ## 🤝 How to Contribute
 
-- **🐛 Report bugs**: Found a bug? Open an issue
-- **💡 Suggest features**: Have an idea? Let us know
-- **🔧 Fix issues**: Pick up an existing issue
+- **🐛 Report bugs**: Open an issue with details
+- **💡 Suggest features**: Share your ideas
+- **🔧 Fix issues**: Pick up existing issues
 - **✨ Add features**: Implement new functionality
 
 ## 🚀 Getting Started
 
-1. **Fork the repository**
-2. **Clone your fork**
-   ```bash
-   git clone https://github.com/yourusername/Host-Code-Online.git
-   cd Host-Code-Online
-   ```
+```bash
+git clone https://github.com/yourusername/Host-Code-Online.git
+cd Host-Code-Online
+pip install -r requirements.txt
+python3 app.py
+```
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the app**
-   ```bash
-   python3 app.py
-   ```
+Visit: `http://localhost:8000`
 
 ## 📦 Making Changes
 
-1. **Create a branch**
-   ```bash
-   git checkout -b feature/your-feature
-   ```
-
-2. **Make your changes**
-   - Keep changes focused
-   - Follow existing code style
-   - Test thoroughly
-
-3. **Commit and push**
-   ```bash
-   git add .
-   git commit -m "Add your feature"
-   git push origin feature/your-feature
-   ```
-
-4. **Create a Pull Request**
+1. **Create a branch**: `git checkout -b feature/your-feature`
+2. **Make changes**: Keep focused, follow existing style
+3. **Test thoroughly**: Test all pages (`/`, `/paste`, `/files`)
+4. **Commit**: `git commit -m "feat: add your feature"`
+5. **Push & PR**: Create a pull request
 
 ## 📋 Guidelines
 
-### Code Style
-- **Python**: Follow PEP 8
-- **JavaScript**: Use consistent indentation
-- **HTML/CSS**: Keep it clean and organized
+**Code Style**:
+- Python: Follow PEP 8
+- JavaScript: Consistent indentation
+- HTML/CSS: Clean and organized
 
-### Commit Messages
+**Commit Format**:
 - `feat: add new feature`
 - `fix: resolve bug`
 - `docs: update documentation`
 - `style: improve UI`
 
-### Testing
-- Test your changes on different browsers
-- Test file upload functionality
-- Check both light and dark modes
+**Testing**:
+- Test on different browsers
+- Check file upload on both `/paste` and `/files`
+- Verify light/dark mode toggle
+- Test drag & drop functionality
 
 ## 🐛 Reporting Issues
 
 Include:
-- Your OS and browser
+- OS and browser version
 - Steps to reproduce
 - Expected vs actual behavior
 - Screenshots if helpful
@@ -78,25 +58,13 @@ Include:
 ## 💡 Feature Requests
 
 Describe:
-- The problem you're solving
-- How it should work
-- Why it would be useful
+- Problem you're solving
+- Proposed solution
+- Why it's useful
 
 ## 🎯 Good First Issues
 
-Look for issues labeled:
-- `good first issue`
-- `help wanted`
-- `bug`
-
-## 📚 Resources
-
-- [Flask Documentation](https://flask.palletsprojects.com/)
-- [rentry.co](https://rentry.co)
-
-## 🙏 Questions?
-
-Open an issue with the `question` label or start a discussion.
+Look for labels: `good first issue`, `help wanted`, `bug`
 
 ---
 

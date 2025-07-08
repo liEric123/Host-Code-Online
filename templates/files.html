@@ -3,62 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Host Code Online</title>
+    <title>Multi-File Upload - Host Code Online</title>
     <style>
         :root {
-            /* Light mode colors */
-            --bg-gradient-start: #667eea;
-            --bg-gradient-end: #764ba2;
-            --container-bg: #ffffff;
-            --text-color: #2d3748;
-            --text-secondary: #4a5568;
-            --input-bg: #ffffff;
-            --input-border: #e2e8f0;
-            --input-focus: #667eea;
-            --button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --success-bg: #c6f6d5;
-            --success-border: #38a169;
-            --error-bg: #fed7d7;
-            --error-border: #e53e3e;
-            --tooltip-bg: #2d3748;
-            --help-icon-bg: #a0aec0;
-            /* Secondary button colors */
-            --secondary-btn-bg: #f7fafc;
-            --secondary-btn-text: #4a5568;
-            --secondary-btn-border: #e2e8f0;
-            --secondary-btn-shadow: rgba(0, 0, 0, 0.1);
-            --secondary-btn-hover-bg: #edf2f7;
-            --secondary-btn-hover-border: #cbd5e0;
-            --secondary-btn-hover-shadow: rgba(0, 0, 0, 0.15);
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --secondary-color: #2196F3;
+            --secondary-hover: #1976D2;
+            --background: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
 
         [data-theme="dark"] {
-            /* Dark mode colors */
-            --bg-gradient-start: #2d3748;
-            --bg-gradient-end: #1a202c;
-            --container-bg: #1a202c;
-            --text-color: #f7fafc;
-            --text-secondary: #cbd5e0;
-            --input-bg: #2d3748;
-            --input-border: #4a5568;
-            --input-focus: #667eea;
-            --button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --success-bg: #22543d;
-            --success-border: #38a169;
-            --error-bg: #742a2a;
-            --error-border: #e53e3e;
-            --tooltip-bg: #4a5568;
-            --help-icon-bg: #718096;
-            /* Secondary button colors - dark mode */
-            --secondary-btn-bg: #4a5568;
-            --secondary-btn-text: #f7fafc;
-            --secondary-btn-border: #718096;
-            --secondary-btn-shadow: rgba(0, 0, 0, 0.4);
-            --secondary-btn-hover-bg: #2d3748;
-            --secondary-btn-hover-border: #667eea;
-            --secondary-btn-hover-shadow: rgba(0, 0, 0, 0.6);
+            --background: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --border-color: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -68,134 +33,175 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--background);
             color: var(--text-color);
-            transition: all 0.3s ease;
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: var(--transition);
         }
 
         .container {
             max-width: 800px;
-            margin: 50px auto;
-            padding: 40px;
-            background: var(--container-bg);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px var(--shadow-color);
-            position: relative;
-            transition: all 0.3s ease;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        .header-controls {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        .header {
+            background: var(--card-bg);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
             z-index: 100;
         }
 
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
         .theme-toggle {
-            background: var(--input-bg);
-            border: 2px solid var(--input-border);
+            background: none;
+            border: 2px solid var(--border-color);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 20px;
-            box-shadow: 0 4px 12px var(--shadow-color);
+            font-size: 1.2rem;
+            transition: var(--transition);
         }
 
         .theme-toggle:hover {
-            transform: scale(1.1);
-            border-color: var(--input-focus);
-            box-shadow: 0 6px 20px var(--shadow-color);
-        }
-
-        .theme-icon {
-            transition: transform 0.2s ease;
-        }
-
-        .theme-toggle.rotate .theme-icon {
-            transform: rotate(180deg);
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--text-color);
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: var(--button-bg);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: all 0.3s ease;
-        }
-
-        .subtitle-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .subtitle-main {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-        }
-
-        .subtitle-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background: var(--primary-color);
+            border-color: var(--primary-color);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .info-notice {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .info-notice p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .page-header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 1.5rem;
         }
 
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
             color: var(--text-color);
-            font-size: 1rem;
-            transition: color 0.3s ease;
         }
 
-        textarea, input[type="text"] {
+        .form-group input,
+        .form-group textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid var(--input-border);
-            border-radius: 12px;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
             font-size: 1rem;
-            background: var(--input-bg);
+            background: var(--card-bg);
             color: var(--text-color);
-            transition: all 0.3s ease;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            transition: var(--transition);
         }
 
-        textarea {
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .code-textarea {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             min-height: 300px;
             resize: vertical;
-        }
-
-        textarea:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: var(--input-focus);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
+            line-height: 1.5;
         }
 
         .optional-fields {
@@ -213,7 +219,7 @@
 
         .upload-btn {
             flex: 2;
-            background: var(--button-bg);
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 18px;
@@ -221,15 +227,15 @@
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: var(--shadow);
         }
 
         .upload-btn:hover:not(:disabled) {
+            background: var(--primary-hover);
             transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
         }
 
         .upload-btn:disabled {
@@ -453,22 +459,22 @@
         }
 
         .file-upload-btn {
-            background: var(--button-bg);
-            color: white;
+            background: var(--primary-color);
+            color: white !important;
             border: none;
             padding: 12px 20px;
             border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
             flex-shrink: 0;
         }
 
         .file-upload-btn:hover {
+            background: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
         .file-upload-btn:active {
@@ -533,18 +539,18 @@
         }
 
         .copy-btn {
-            background: var(--button-bg);
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
 
         .copy-btn:hover {
-            opacity: 0.8;
+            background: var(--primary-hover);
             transform: translateY(-1px);
         }
 
@@ -581,7 +587,7 @@
         }
 
         .preview-btn {
-            background: var(--button-bg);
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 10px 16px;
@@ -589,26 +595,26 @@
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
         }
 
         .preview-btn:hover {
+            background: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
         .preview-btn.secondary {
-            background: var(--secondary-btn-bg);
-            color: var(--secondary-btn-text);
-            border: 2px solid var(--secondary-btn-border);
-            box-shadow: 0 2px 8px var(--secondary-btn-shadow);
+            background: var(--card-bg);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--shadow);
         }
 
         .preview-btn.secondary:hover {
-            background: var(--secondary-btn-hover-bg);
-            border-color: var(--secondary-btn-hover-border);
-            box-shadow: 0 4px 12px var(--secondary-btn-hover-shadow);
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
 
         .file-preview-item {
@@ -671,20 +677,20 @@
         }
 
         .file-preview-toggle {
-            background: var(--secondary-btn-bg);
-            border: 1px solid var(--secondary-btn-border);
-            color: var(--secondary-btn-text);
+            background: var(--card-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
             font-size: 0.9rem;
             cursor: pointer;
             padding: 8px 12px;
             border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             font-weight: 500;
         }
 
         .file-preview-toggle:hover {
-            background: var(--secondary-btn-hover-bg);
-            border-color: var(--secondary-btn-hover-border);
+            background: var(--input-bg);
+            border-color: var(--primary-color);
             transform: translateY(-1px);
         }
 
@@ -1071,18 +1077,26 @@
     </style>
 </head>
 <body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                🔗 Host Code Online
+            </a>
+            <div class="nav-links">
+                <a href="/paste">Single Paste</a>
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                    🌙
+                </button>
+            </div>
+        </div>
+    </header>
+
     <div class="container">
-        <div class="header-controls">
-            <button id="themeToggle" class="theme-toggle" title="Toggle dark/light mode">
-                <span class="theme-icon">🌙</span>
-            </button>
+        <div class="page-header">
+            <h1>🗂️ Multi-File Upload</h1>
+            <p>Upload multiple files with advanced options and preview</p>
         </div>
-        <h1>🚀 Host Code Online</h1>
-        <div class="subtitle-container">
-            <p class="subtitle-main">Fastest way to host and share code (or really anything) online</p>
-            <p class="subtitle-badge">NO LOGIN REQUIRED</p>
-        </div>
-        <form id="uploadForm">
+        <form id="uploadForm" class="form-container">
             <div class="form-group">
                 <label for="code">Your Code</label>
                 <div class="code-input-container">
@@ -2132,49 +2146,22 @@
 
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('.theme-icon');
-        
-        // Load saved theme or default to light
+        const themeIcon = themeToggle;
+
+        // Check for saved theme preference or default to light mode
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
-        
-        let isThemeChanging = false;
-        
+
         themeToggle.addEventListener('click', () => {
-            if (isThemeChanging) return; // Prevent rapid clicking
-            
-            isThemeChanging = true;
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            // Add rotation animation
-            themeToggle.classList.add('rotate');
-            themeToggle.style.pointerEvents = 'none'; // Disable clicking during animation
-            
-            // Fade out content
-            document.body.style.transition = 'opacity 0.25s ease';
-            document.body.style.opacity = '0.7';
-            
-            setTimeout(() => {
-                // Change theme
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeIcon(newTheme);
-                
-                // Fade back in
-                document.body.style.opacity = '1';
-                
-                setTimeout(() => {
-                    // Clean up
-                    themeToggle.classList.remove('rotate');
-                    themeToggle.style.pointerEvents = '';
-                    document.body.style.transition = '';
-                    isThemeChanging = false;
-                }, 250);
-            }, 250);
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
         });
-        
+
         function updateThemeIcon(theme) {
             themeIcon.style.transform = 'scale(0.8)';
             setTimeout(() => {
