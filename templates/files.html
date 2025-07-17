@@ -81,7 +81,8 @@
             align-items: center;
         }
 
-        .nav-links a {
+        .nav-links a,
+        .nav-links .user-info {
             text-decoration: none;
             color: var(--text-color);
             padding: 0.5rem 1rem;
@@ -92,6 +93,10 @@
         .nav-links a:hover {
             background: var(--primary-color);
             color: white;
+        }
+
+        .user-info {
+            font-weight: 500;
         }
 
         .theme-toggle {
@@ -126,6 +131,70 @@
             margin: 0;
             font-size: 0.95rem;
             opacity: 0.8;
+        }
+
+        /* User dropdown styles */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: var(--shadow);
+            min-width: 150px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            border-radius: 4px;
+            margin: 0.2rem;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--primary-color);
+            color: white;
         }
 
         @media (max-width: 768px) {
@@ -355,6 +424,123 @@
             transition: color 0.3s ease;
         }
 
+        /* Save to Account Toggle Switch Styles */
+        .save-to-account-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.08), rgba(102, 126, 234, 0.08));
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .save-to-account-container:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.12), rgba(102, 126, 234, 0.12));
+            border-color: rgba(76, 175, 80, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+        }
+
+        .save-to-account-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .save-to-account-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(76, 175, 80, 0.15);
+            border-radius: 50%;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .save-to-account-text h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .save-to-account-text p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: all 0.3s ease;
+            border-radius: 28px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--primary-color);
+            box-shadow: inset 0 2px 4px rgba(76, 175, 80, 0.3);
+        }
+
+        .toggle-switch input:focus + .toggle-slider {
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-switch:hover .toggle-slider {
+            background: #bbb;
+        }
+
+        .toggle-switch:hover input:checked + .toggle-slider {
+            background: var(--primary-hover);
+        }
+
         .info-notice {
             background: rgba(102, 126, 234, 0.1);
             border: 1px solid rgba(102, 126, 234, 0.2);
@@ -373,31 +559,23 @@
 
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 240px;
-            background: var(--tooltip-bg);
-            color: white;
-            text-align: left;
-            border-radius: 8px;
-            padding: 10px;
+            width: 280px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            text-align: center;
+            border-radius: 6px;
+            padding: 1rem;
             position: absolute;
             z-index: 1000;
             bottom: 125%;
-            right: 0;
+            left: 50%;
+            margin-left: -140px;
             opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-            font-size: 0.8rem;
-            line-height: 1.3;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            right: 15px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--tooltip-bg) transparent transparent transparent;
+            transition: opacity 0.3s;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .tooltip:hover .tooltiptext {
@@ -416,126 +594,24 @@
             transform: translateY(-50%);
             width: 20px;
             height: 20px;
-            background: var(--help-icon-bg);
-            color: white;
             border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 0.8rem;
             cursor: help;
             transition: all 0.3s ease;
         }
 
         .help-icon:hover {
-            background: var(--input-focus);
+            background: var(--primary-hover);
         }
 
-        /* File upload and drag-and-drop styles */
-        .code-input-container {
-            position: relative;
-        }
-
-        .file-input-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--input-bg);
-            border: 2px dashed var(--input-border);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-section:hover {
-            border-color: var(--input-focus);
-            background: rgba(102, 126, 234, 0.05);
-        }
-
+        /* Legacy file upload styles - cleaned up for new interface */
         #fileInput {
             display: none;
-        }
-
-        .file-upload-btn {
-            background: var(--primary-color);
-            color: white !important;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            flex-shrink: 0;
-        }
-
-        .file-upload-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        .file-upload-btn:active {
-            transform: translateY(0);
-        }
-
-        .file-help-text {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        .multi-file-options {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(102, 126, 234, 0.05);
-            border: 1px solid var(--input-border);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .multi-file-label {
-            display: block;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            background: var(--input-bg);
-            border: 2px solid transparent;
-        }
-
-        .radio-option:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: var(--input-focus);
-        }
-
-        .radio-option input[type="radio"] {
-            margin: 0;
-            accent-color: var(--input-focus);
-        }
-
-        .radio-text {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            font-weight: 500;
         }
 
         .copy-btn {
@@ -552,6 +628,95 @@
         .copy-btn:hover {
             background: var(--primary-hover);
             transform: translateY(-1px);
+        }
+
+        /* File Upload Area Styles */
+        .file-upload-area {
+            margin-bottom: 1.5rem;
+        }
+
+        .drag-drop-zone {
+            position: relative;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--surface-color);
+            transition: all 0.3s ease;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drag-drop-zone:hover {
+            border-color: var(--primary-color);
+            background: var(--hover-color);
+        }
+
+        .drag-drop-zone.drag-over {
+            border-color: var(--primary-color);
+            background: var(--primary-color-light);
+            transform: scale(1.02);
+        }
+
+        .file-upload-content {
+            z-index: 1;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .file-upload-content h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+
+        .file-upload-content > p {
+            margin: 0 0 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .file-upload-btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-btn.primary:hover {
+            background: var(--primary-color-dark);
+            transform: translateY(-2px);
+        }
+
+        .file-help-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .supported-formats {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--background-light);
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+        }
+
+        .supported-formats small {
+            color: var(--text-secondary);
+            line-height: 1.4;
         }
 
         /* File Preview Styles */
@@ -1074,6 +1239,18 @@
                 width: 100%;
             }
         }
+
+        .footer {
+            background: var(--card-bg);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer p {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -1083,10 +1260,27 @@
                 🔗 Host Code Online
             </a>
             <div class="nav-links">
-                <a href="/paste">Single Paste</a>
-                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                    🌙
-                </button>
+                <a href="/">Home</a>
+                <a href="/paste">Single File</a>
+                <div style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+                    {% if current_user.is_authenticated %}
+                        <div class="user-dropdown">
+                            <button class="user-button" onclick="toggleUserDropdown()">
+                                👤 {{ current_user.username }} ▼
+                            </button>
+                            <div class="dropdown-menu" id="userDropdown">
+                                <a href="/dashboard">📊 Dashboard</a>
+                                <a href="/logout">🚪 Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="/login">Sign In</a>
+                        <a href="/register">Register</a>
+                    {% endif %}
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        🌙
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -1098,39 +1292,32 @@
         </div>
         <form id="uploadForm" class="form-container">
             <div class="form-group">
-                <label for="code">Your Code</label>
-                <div class="code-input-container">
-                    <textarea id="code" placeholder="Paste your code here or drag & drop files..." required></textarea>
-                    <div class="drag-drop-overlay" id="dragDropOverlay">
-                        <div class="drag-drop-content">
-                            <div class="drag-drop-icon">📁</div>
-                            <p>Drop your file(s) here</p>
+                <div class="file-upload-area">
+                    <div class="drag-drop-zone" id="dragDropZone">
+                        <div class="drag-drop-overlay" id="dragDropOverlay">
+                            <div class="drag-drop-content">
+                                <div class="drag-drop-icon">📁</div>
+                                <p>Drop your file(s) here</p>
+                            </div>
+                        </div>
+                        <div class="file-upload-content">
+                            <div class="upload-icon">📁</div>
+                            <h3>Select Files to Upload</h3>
+                            <p>Choose multiple code files to upload and share</p>
+                            <button type="button" class="file-upload-btn primary" onclick="document.getElementById('fileInput').click()">
+                                📁 Choose Files
+                            </button>
+                            <p class="file-help-text">or drag & drop files here</p>
+                            <div class="supported-formats">
+                                <small>Supported: .py, .js, .html, .css, .json, .cpp, .java, .php, .rb, .go, .rs, .ts, .md, .sql, .sh, .yml and more</small>
+                            </div>
+                        </div>
+                        <div class="file-processing" id="fileProcessing">
+                            <div class="spinner"></div>
+                            <span>Processing file(s)...</span>
                         </div>
                     </div>
-                    <div class="file-processing" id="fileProcessing">
-                        <div class="spinner"></div>
-                        <span>Processing file(s)...</span>
-                    </div>
-                </div>
-                <div class="file-input-section">
-                    <input type="file" id="fileInput" accept=".txt,.js,.py,.html,.css,.json,.xml,.md,.sql,.cpp,.c,.java,.cs,.php,.rb,.go,.rs,.ts,.jsx,.tsx,.vue,.swift,.kt,.scala,.sh,.bat,.ps1,.yml,.yaml,.toml,.ini,.cfg,.conf" multiple>
-                    <button type="button" class="file-upload-btn" onclick="document.getElementById('fileInput').click()">
-                        📁 Choose File(s)
-                    </button>
-                    <span class="file-help-text">or drag & drop files above</span>
-                </div>
-                <div class="multi-file-options" id="multiFileOptions" style="display: none;">
-                    <label class="multi-file-label">For multiple files:</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="multiFileMode" value="combine" checked>
-                            <span class="radio-text">📄 Combine into one paste</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="multiFileMode" value="separate">
-                            <span class="radio-text">📂 Create separate pastes</span>
-                        </label>
-                    </div>
+                    <input type="file" id="fileInput" accept=".txt,.js,.py,.html,.css,.json,.xml,.md,.sql,.cpp,.c,.java,.cs,.php,.rb,.go,.rs,.ts,.jsx,.tsx,.vue,.swift,.kt,.scala,.sh,.bat,.ps1,.yml,.yaml,.toml,.ini,.cfg,.conf" multiple style="display: none;">
                 </div>
             </div>
 
@@ -1164,9 +1351,27 @@
                     </div>
                     <p class="info-text">💡 Empty = Write-once (secure) | Custom = Editable later</p>
                 </div>
+
+                {% if current_user.is_authenticated %}
+                <div class="form-group">
+                    <div class="save-to-account-container">
+                        <div class="save-to-account-header">
+                            <div class="save-to-account-icon">💾</div>
+                            <div class="save-to-account-text">
+                                <h4>Save to Your Account</h4>
+                                <p>Track this upload in your dashboard and access it anytime</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="save_to_account" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                {% endif %}
             </div>
 
-            <div class="button-row">
+            <div class="button-row" id="buttonRow" style="display: none;">
                 <button type="button" class="format-btn" id="formatBtn">
                     <span class="format-btn-text">✨ Format Code</span>
                     <div class="loading format-loading">
@@ -1175,7 +1380,7 @@
                     </div>
                 </button>
                 <button type="submit" class="upload-btn">
-                    <span class="btn-text">Upload Code</span>
+                    <span class="btn-text">Upload Files</span>
                     <div class="loading">
                         <div class="spinner"></div>
                         <span>Uploading...</span>
@@ -1183,10 +1388,6 @@
                 </button>
             </div>
         </form>
-
-        <div class="info-notice">
-            <p>💡 <strong>Tip:</strong> Already have a rentry.co link? You can edit it by entering the URL and your edit code above!</p>
-        </div>
 
         <!-- File Preview Section -->
         <div class="file-preview-section" id="filePreviewSection">
@@ -1280,19 +1481,18 @@
     <script>
         // File upload and drag-and-drop functionality
         const fileInput = document.getElementById('fileInput');
-        const codeTextarea = document.getElementById('code');
         const dragDropOverlay = document.getElementById('dragDropOverlay');
         const fileProcessing = document.getElementById('fileProcessing');
-        const codeInputContainer = document.querySelector('.code-input-container');
+        const dragDropZone = document.getElementById('dragDropZone');
 
         // File input change handler
         fileInput.addEventListener('change', handleFileSelect);
 
         // Drag and drop event listeners
-        codeInputContainer.addEventListener('dragover', handleDragOver);
-        codeInputContainer.addEventListener('dragenter', handleDragEnter);
-        codeInputContainer.addEventListener('dragleave', handleDragLeave);
-        codeInputContainer.addEventListener('drop', handleDrop);
+        dragDropZone.addEventListener('dragover', handleDragOver);
+        dragDropZone.addEventListener('dragenter', handleDragEnter);
+        dragDropZone.addEventListener('dragleave', handleDragLeave);
+        dragDropZone.addEventListener('drop', handleDrop);
 
         // Prevent default drag behaviors on the document
         document.addEventListener('dragover', e => e.preventDefault());
@@ -1306,14 +1506,16 @@
         function handleDragEnter(e) {
             e.preventDefault();
             e.stopPropagation();
+            dragDropZone.classList.add('drag-over');
             dragDropOverlay.classList.add('active');
         }
 
         function handleDragLeave(e) {
             e.preventDefault();
             e.stopPropagation();
-            // Only hide overlay if leaving the container completely
-            if (!codeInputContainer.contains(e.relatedTarget)) {
+            // Only hide overlay if leaving the zone completely
+            if (!dragDropZone.contains(e.relatedTarget)) {
+                dragDropZone.classList.remove('drag-over');
                 dragDropOverlay.classList.remove('active');
             }
         }
@@ -1321,6 +1523,7 @@
         function handleDrop(e) {
             e.preventDefault();
             e.stopPropagation();
+            dragDropZone.classList.remove('drag-over');
             dragDropOverlay.classList.remove('active');
             
             const files = e.dataTransfer.files;
@@ -1334,16 +1537,13 @@
             if (files.length > 0) {
                 processFiles(files);
             } else {
-                // Hide multi-file options when no files selected
-                document.getElementById('multiFileOptions').style.display = 'none';
+                // Hide buttons and preview when no files selected
+                document.getElementById('buttonRow').style.display = 'none';
+                document.getElementById('filePreviewSection').style.display = 'none';
             }
         }
 
         async function processFiles(files) {
-            // Hide multi-file options (we'll show them in preview instead)
-            const multiFileOptions = document.getElementById('multiFileOptions');
-            multiFileOptions.style.display = 'none';
-
             // Show processing indicator
             fileProcessing.classList.add('active');
             
@@ -1371,13 +1571,11 @@
                     throw new Error('No valid files to process');
                 }
 
-                // For multiple files, always go to preview
-                if (validFiles.length > 1) {
-                    await showMultiFilePreview(validFiles);
-                } else {
-                    // Single file - process directly
-                    await processSingleFile(validFiles[0]);
-                }
+                // Always show file preview for multi-file interface
+                await showFilePreview(validFiles);
+                
+                // Show the optional fields and buttons
+                document.getElementById('buttonRow').style.display = 'flex';
                 
             } catch (error) {
                 console.error('Error processing files:', error);
@@ -1392,42 +1590,7 @@
 
 
 
-        async function processSingleFile(file) {
-            const content = await readFileContent(file);
-            
-            // Ask user if they want to replace or append
-            const currentContent = codeTextarea.value.trim();
-            if (currentContent) {
-                const action = confirm(
-                    `You have existing content in the textarea.\n\n` +
-                    `Click "OK" to REPLACE the existing content with the file.\n` +
-                    `Click "Cancel" to APPEND the file to the existing content.`
-                );
-                
-                if (action) {
-                    // Replace
-                    codeTextarea.value = content;
-                } else {
-                    // Append
-                    codeTextarea.value = currentContent + '\n\n' + content;
-                }
-            } else {
-                // No existing content, just set the new content
-                codeTextarea.value = content;
-            }
-            
-            // Auto-resize textarea
-            codeTextarea.style.height = 'auto';
-            codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
-            
-            // Show success message
-            showFileSuccessMessage(1, 1);
-        }
-
-        async function showMultiFilePreview(files) {
-            // Clear textarea
-            codeTextarea.value = '';
-            
+        async function showFilePreview(files) {
             // Load file contents and show preview
             const fileData = [];
             
@@ -1446,7 +1609,7 @@
             window.previewFileData = fileData;
             
             // Show file preview section
-            showFilePreview(fileData);
+            displayFilePreview(fileData);
         }
 
         function formatFileSize(bytes) {
@@ -1457,7 +1620,7 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
 
-        function showFilePreview(fileData) {
+        function displayFilePreview(fileData) {
             const previewSection = document.getElementById('filePreviewSection');
             const previewList = document.getElementById('filePreviewList');
             
@@ -1662,6 +1825,10 @@
             
             // Upload combined content
             try {
+                // Check save_to_account checkbox
+                const saveToAccountCheckbox = document.getElementById('save_to_account');
+                const saveToAccount = saveToAccountCheckbox ? saveToAccountCheckbox.checked : true;
+                
                 const response = await fetch('/upload', {
                     method: 'POST',
                     headers: {
@@ -1670,7 +1837,8 @@
                     body: JSON.stringify({
                         code: combinedContent,
                         url: document.getElementById('url').value || '',
-                        edit_code: editCode
+                        edit_code: editCode,
+                        save_to_account: saveToAccount
                     })
                 });
 
@@ -1743,6 +1911,10 @@
                 }
                 
                 try {
+                    // Check save_to_account checkbox
+                    const saveToAccountCheckbox = document.getElementById('save_to_account');
+                    const saveToAccount = saveToAccountCheckbox ? saveToAccountCheckbox.checked : true;
+                    
                     // Upload each selected file separately
                     const response = await fetch('/upload', {
                         method: 'POST',
@@ -1752,7 +1924,9 @@
                         body: JSON.stringify({
                             code: fileInfo.content,
                             url: '', // Let it auto-generate
-                            edit_code: editCode
+                            edit_code: editCode,
+                            save_to_account: saveToAccount,
+                            filename: fileInfo.filename
                         })
                     });
 
@@ -1904,7 +2078,8 @@
                     },
                     body: JSON.stringify({
                         code: fileData.content,
-                        language: null // Let backend detect
+                        language: null, // Let backend detect
+                        filename: fileData.filename
                     })
                 });
 
@@ -1976,7 +2151,8 @@
                             },
                             body: JSON.stringify({
                                 code: fileData.content,
-                                language: null // Let backend detect
+                                language: null, // Let backend detect
+                                filename: fileData.filename
                             })
                         });
 
@@ -2151,7 +2327,7 @@
         // Check for saved theme preference or default to light mode
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
+        setThemeIcon(savedTheme);
 
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -2162,6 +2338,11 @@
             updateThemeIcon(newTheme);
         });
 
+        function setThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+        }
+
         function updateThemeIcon(theme) {
             themeIcon.style.transform = 'scale(0.8)';
             setTimeout(() => {
@@ -2171,180 +2352,58 @@
             }, 125);
         }
 
-        // Format code functionality
-        document.getElementById('formatBtn').addEventListener('click', async function() {
-            const codeTextarea = document.getElementById('code');
-            const btn = document.getElementById('formatBtn');
-            const btnText = document.querySelector('.format-btn-text');
-            const loading = document.querySelector('.format-loading');
-            const result = document.getElementById('result');
-            const resultContent = document.getElementById('resultContent');
+        // User dropdown functionality
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
 
-            if (!codeTextarea.value.trim()) {
-                // Show error for empty code
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const userButton = document.querySelector('.user-button');
+            
+            if (dropdown && !userButton.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Format code functionality - now formats all selected files
+        document.getElementById('formatBtn').addEventListener('click', async function() {
+            if (!window.previewFileData || window.previewFileData.length === 0) {
+                const result = document.getElementById('result');
+                const resultContent = document.getElementById('resultContent');
                 result.style.display = 'block';
                 result.className = 'result error';
                 resultContent.innerHTML = `
                     <h3>❌ Format failed</h3>
-                    <p>Please enter some code to format</p>
+                    <p>Please select files to format</p>
                 `;
                 return;
             }
 
-            // Show loading state
-            btn.disabled = true;
-            btnText.style.display = 'none';
-            loading.style.display = 'flex';
-            result.style.display = 'none';
-
-            const formData = {
-                code: codeTextarea.value,
-                language: null // Let the backend detect the language
-            };
-
-            try {
-                const response = await fetch('/format', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                // Reset button state
-                btn.disabled = false;
-                btnText.style.display = 'inline';
-                loading.style.display = 'none';
-
-                // Show result
-                result.style.display = 'block';
-
-                if (data.success) {
-                    // Update the textarea with formatted code
-                    codeTextarea.value = data.formatted_code;
-                    
-                    // Auto-resize textarea
-                    codeTextarea.style.height = 'auto';
-                    codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
-                    
-                    result.className = 'result success';
-                    resultContent.innerHTML = `
-                        <h3>✅ Code formatted successfully!</h3>
-                        <p>${data.message}</p>
-                    `;
-                } else {
-                    result.className = 'result error';
-                    resultContent.innerHTML = `
-                        <h3>❌ Format failed</h3>
-                        <p>${data.error}</p>
-                    `;
-                }
-            } catch (error) {
-                // Reset button state
-                btn.disabled = false;
-                btnText.style.display = 'inline';
-                loading.style.display = 'none';
-
-                // Show error
-                result.style.display = 'block';
-                result.className = 'result error';
-                resultContent.innerHTML = `
-                    <h3>❌ Format failed</h3>
-                    <p>Network error: ${error.message}</p>
-                `;
-            }
+            // Call the existing formatAllFiles function
+            formatAllFiles();
         });
 
-        // Upload form functionality
+        // Upload form functionality - now handles file uploads
         document.getElementById('uploadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const btn = document.querySelector('.upload-btn');
-            const btnText = document.querySelector('.btn-text');
-            const loading = document.querySelector('.loading');
-            const result = document.getElementById('result');
-            const resultContent = document.getElementById('resultContent');
-
-            const formData = {
-                code: document.getElementById('code').value,
-                url: document.getElementById('url').value,
-                edit_code: document.getElementById('edit_code').value
-            };
-
-            // Warn user if no edit code is provided
-            if (!formData.edit_code.trim()) {
-                const proceed = confirm('🔒 Creating write-once paste!\n\nNo edit code means:\n• More secure (no one can edit)\n• Cannot be modified later\n• Auto-generated random edit code\n\nDo you want to continue with this secure option?');
-                if (!proceed) {
-                    return;
-                }
-            }
-
-            // Show loading state
-            btn.disabled = true;
-            btnText.style.display = 'none';
-            loading.style.display = 'flex';
-            result.style.display = 'none';
-
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                // Reset button state
-                btn.disabled = false;
-                btnText.style.display = 'inline';
-                loading.style.display = 'none';
-
-                // Show result
-                result.style.display = 'block';
-
-                if (data.success) {
-                    result.className = 'result success';
-                    resultContent.innerHTML = `
-                        <h3>✅ Code uploaded successfully!</h3>
-                        <div class="result-url">
-                            <strong>URL:</strong> <a href="${data.url}" target="_blank">${data.url}</a>
-                            <button class="copy-btn" onclick="copyToClipboard('${data.url}')">Copy</button>
-                        </div>
-                        ${data.edit_code ? `
-                        <div class="result-url">
-                            <strong>Edit Code:</strong> ${data.edit_code}
-                            <button class="copy-btn" onclick="copyToClipboard('${data.edit_code}')">Copy</button>
-                        </div>
-                        <p style="margin-top: 15px; font-size: 0.9rem;">💡 Save your edit code to modify your code later!</p>
-                        ` : `
-                        <p style="margin-top: 15px; font-size: 0.9rem; color: #4CAF50;">🔒 Write-once paste created - more secure, cannot be edited!</p>
-                        `}
-                    `;
-                } else {
-                    result.className = 'result error';
-                    resultContent.innerHTML = `
-                        <h3>❌ Upload failed</h3>
-                        <p>${data.error}</p>
-                    `;
-                }
-            } catch (error) {
-                // Reset button state
-                btn.disabled = false;
-                btnText.style.display = 'inline';
-                loading.style.display = 'none';
-
-                // Show error
+            if (!window.previewFileData || window.previewFileData.length === 0) {
+                const result = document.getElementById('result');
+                const resultContent = document.getElementById('resultContent');
                 result.style.display = 'block';
                 result.className = 'result error';
                 resultContent.innerHTML = `
                     <h3>❌ Upload failed</h3>
-                    <p>Network error: ${error.message}</p>
+                    <p>Please select files to upload</p>
                 `;
+                return;
             }
+
+            // Call the existing uploadSelectedFiles function
+            uploadSelectedFiles();
         });
 
         function copyToClipboard(text) {
@@ -2354,11 +2413,11 @@
             });
         }
 
-        // Auto-resize textarea
-        document.getElementById('code').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.max(300, this.scrollHeight) + 'px';
-        });
+
     </script>
+
+    <footer class="footer">
+        <p>Built with ❤️ using Flask and rentry.co API</p>
+    </footer>
 </body>
 </html> 

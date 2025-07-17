@@ -4,4 +4,9 @@ Werkzeug==3.0.1
 autopep8
 jsbeautifier
 beautifulsoup4
-lxml 
+lxml
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.1
+WTForms==3.1.1
+email_validator==2.2.0 

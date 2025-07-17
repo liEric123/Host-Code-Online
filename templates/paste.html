@@ -76,7 +76,8 @@
             align-items: center;
         }
 
-        .nav-links a {
+        .nav-links a,
+        .nav-links .user-info {
             text-decoration: none;
             color: var(--text-color);
             padding: 0.5rem 1rem;
@@ -87,6 +88,10 @@
         .nav-links a:hover {
             background: var(--primary-color);
             color: white;
+        }
+
+        .user-info {
+            font-weight: 500;
         }
 
         .theme-toggle {
@@ -233,6 +238,123 @@
             color: var(--text-color);
             opacity: 0.7;
             margin-top: 0.5rem;
+        }
+
+        /* Save to Account Toggle Switch Styles */
+        .save-to-account-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.08), rgba(102, 126, 234, 0.08));
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .save-to-account-container:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.12), rgba(102, 126, 234, 0.12));
+            border-color: rgba(76, 175, 80, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+        }
+
+        .save-to-account-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .save-to-account-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(76, 175, 80, 0.15);
+            border-radius: 50%;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .save-to-account-text h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .save-to-account-text p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: all 0.3s ease;
+            border-radius: 28px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--primary-color);
+            box-shadow: inset 0 2px 4px rgba(76, 175, 80, 0.3);
+        }
+
+        .toggle-switch input:focus + .toggle-slider {
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-switch:hover .toggle-slider {
+            background: #bbb;
+        }
+
+        .toggle-switch:hover input:checked + .toggle-slider {
+            background: var(--primary-hover);
         }
 
         .file-upload-option {
@@ -501,6 +623,82 @@
             opacity: 0.8;
         }
 
+        .footer {
+            background: var(--card-bg);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer p {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* User dropdown styles */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: var(--shadow);
+            min-width: 150px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            border-radius: 4px;
+            margin: 0.2rem;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -528,10 +726,27 @@
                 🔗 Host Code Online
             </a>
             <div class="nav-links">
-                <a href="/files">Multi-File Upload</a>
-                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                    🌙
-                </button>
+                <a href="/">Home</a>
+                <a href="/files">Multi File</a>
+                <div style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+                    {% if current_user.is_authenticated %}
+                        <div class="user-dropdown">
+                            <button class="user-button" onclick="toggleUserDropdown()">
+                                👤 {{ current_user.username }} ▼
+                            </button>
+                            <div class="dropdown-menu" id="userDropdown">
+                                <a href="/dashboard">📊 Dashboard</a>
+                                <a href="/logout">🚪 Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="/login">Sign In</a>
+                        <a href="/register">Register</a>
+                    {% endif %}
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        🌙
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -584,6 +799,24 @@
                 <p class="info-text">💡 Empty = Write-once (secure) | Custom = Editable later</p>
             </div>
 
+            {% if current_user.is_authenticated %}
+            <div class="form-group">
+                <div class="save-to-account-container">
+                    <div class="save-to-account-header">
+                        <div class="save-to-account-icon">💾</div>
+                        <div class="save-to-account-text">
+                            <h4>Save to Your Account</h4>
+                            <p>Track this upload in your dashboard and access it anytime</p>
+                        </div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="save_to_account" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="button-row">
                 <button type="button" class="btn btn-secondary" id="formatBtn">
                     <span class="btn-text">✨ Format Code</span>
@@ -611,7 +844,14 @@
         </div>
     </div>
 
+    <footer class="footer">
+        <p>Built with ❤️ using Flask and rentry.co API</p>
+    </footer>
+
     <script>
+        // Global variable to track uploaded filename for language detection
+        let uploadedFilename = null;
+
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = themeToggle;
@@ -619,7 +859,7 @@
         // Check for saved theme preference or default to light mode
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
+        setThemeIcon(savedTheme);
 
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -630,6 +870,11 @@
             updateThemeIcon(newTheme);
         });
 
+        function setThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+        }
+
         function updateThemeIcon(theme) {
             themeIcon.style.transform = 'scale(0.8)';
             setTimeout(() => {
@@ -639,10 +884,31 @@
             }, 125);
         }
 
+        // User dropdown functionality
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const userButton = document.querySelector('.user-button');
+            
+            if (dropdown && !userButton.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
         // Auto-resize textarea
         document.getElementById('code').addEventListener('input', function() {
             this.style.height = 'auto';
             this.style.height = Math.max(300, this.scrollHeight) + 'px';
+            
+            // Clear filename if user manually types/edits content
+            if (this.value !== this.dataset.lastFileContent) {
+                uploadedFilename = null;
+            }
         });
 
         // File upload functionality
@@ -691,6 +957,10 @@
                 } else {
                     codeTextarea.value = content;
                 }
+
+                // Store filename for language detection
+                uploadedFilename = file.name;
+                codeTextarea.dataset.lastFileContent = content;
 
                 // Auto-resize textarea
                 codeTextarea.style.height = 'auto';
@@ -811,6 +1081,10 @@
                     codeTextarea.value = content;
                 }
 
+                // Store filename for language detection
+                uploadedFilename = file.name;
+                codeTextarea.dataset.lastFileContent = content;
+
                 // Auto-resize textarea
                 codeTextarea.style.height = 'auto';
                 codeTextarea.style.height = Math.max(300, codeTextarea.scrollHeight) + 'px';
@@ -854,7 +1128,8 @@
                     },
                     body: JSON.stringify({
                         code: codeTextarea.value,
-                        language: null
+                        language: null,
+                        filename: uploadedFilename
                     })
                 });
 
@@ -896,6 +1171,17 @@
                 url: document.getElementById('url').value,
                 edit_code: document.getElementById('edit_code').value
             };
+
+            // Include filename if available for language detection
+            if (uploadedFilename) {
+                formData.filename = uploadedFilename;
+            }
+
+            // Include save_to_account checkbox if present
+            const saveToAccountCheckbox = document.getElementById('save_to_account');
+            if (saveToAccountCheckbox) {
+                formData.save_to_account = saveToAccountCheckbox.checked;
+            }
 
             // Warn user if no edit code is provided
             if (!formData.edit_code.trim()) {

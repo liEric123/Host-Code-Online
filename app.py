@@ -1,4 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, TextAreaField, BooleanField, SubmitField, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, Length
+from werkzeug.security import generate_password_hash, check_password_hash
 import requests
 import re
 import random
@@ -7,8 +13,88 @@ import json
 import autopep8
 import jsbeautifier
 from bs4 import BeautifulSoup
+from datetime import datetime
+import os
 
 app = Flask(__name__)
+
+# Configuration
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize extensions
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Please log in to access this page.'
+
+# Database Models
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    uploads = db.relationship('Upload', backref='user', lazy=True, cascade='all, delete-orphan')
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password, method='pbkdf2:sha256')
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+class Upload(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    rentry_url = db.Column(db.String(200), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    language = db.Column(db.String(50))  # Detected programming language
+    has_edit_code = db.Column(db.Boolean, default=False)  # Whether this upload has an edit code
+    edit_code = db.Column(db.String(100))  # The actual edit code (only stored if user provided one)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Upload {self.title}>'
+    
+    @property
+    def url_slug(self):
+        """Get just the URL slug (last part after slash)"""
+        return self.rentry_url.split('/')[-1]
+
+# User loader for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# Forms
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+    
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('Please use a different username.')
+    
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Please use a different email address.')
 
 class RentryUploader:
     def __init__(self):
@@ -228,7 +314,7 @@ class RentryUploader:
             # Remove single backticks and wrap with triple backticks
             code_text = code_text[1:-1].strip()
         
-        # Try to detect language based on common patterns
+        # Try to detect language based on common patterns (no filename available here)
         language = self.detect_language(code_text)
         
         # Wrap with triple backticks
@@ -237,8 +323,109 @@ class RentryUploader:
         else:
             return f"```\n{code_text}\n```"
     
-    def detect_language(self, code_text):
-        """Simple language detection based on common patterns"""
+    def detect_language_from_filename(self, filename):
+        """Detect language from file extension"""
+        if not filename:
+            return None
+            
+        # Get file extension
+        ext = filename.lower().split('.')[-1] if '.' in filename else ''
+        
+        # Map extensions to languages
+        extension_map = {
+            # Python
+            'py': 'python',
+            'pyw': 'python',
+            'pyx': 'python',
+            
+            # JavaScript/TypeScript
+            'js': 'javascript',
+            'jsx': 'javascript',
+            'ts': 'typescript',
+            'tsx': 'typescript',
+            'mjs': 'javascript',
+            'cjs': 'javascript',
+            
+            # Java
+            'java': 'java',
+            'class': 'java',
+            
+            # C/C++
+            'c': 'c',
+            'h': 'c',
+            'cpp': 'cpp',
+            'cxx': 'cpp',
+            'cc': 'cpp',
+            'hpp': 'cpp',
+            'hxx': 'cpp',
+            'hh': 'cpp',
+            
+            # C#
+            'cs': 'csharp',
+            
+            # Web
+            'html': 'html',
+            'htm': 'html',
+            'xhtml': 'html',
+            'css': 'css',
+            'scss': 'scss',
+            'sass': 'sass',
+            'less': 'less',
+            
+            # Data formats
+            'json': 'json',
+            'xml': 'xml',
+            'yaml': 'yaml',
+            'yml': 'yaml',
+            'toml': 'toml',
+            'ini': 'ini',
+            'cfg': 'ini',
+            'conf': 'ini',
+            
+            # Shell/Scripts
+            'sh': 'bash',
+            'bash': 'bash',
+            'zsh': 'bash',
+            'fish': 'bash',
+            'bat': 'batch',
+            'cmd': 'batch',
+            'ps1': 'powershell',
+            
+            # Other languages
+            'php': 'php',
+            'rb': 'ruby',
+            'go': 'go',
+            'rs': 'rust',
+            'swift': 'swift',
+            'kt': 'kotlin',
+            'scala': 'scala',
+            'sql': 'sql',
+            'md': 'markdown',
+            'txt': 'text',
+            
+            # Vue/React
+            'vue': 'vue',
+            
+            # R
+            'r': 'r',
+            
+            # Perl
+            'pl': 'perl',
+            'pm': 'perl',
+        }
+        
+        return extension_map.get(ext, None)
+
+    def detect_language(self, code_text, filename=None):
+        """Enhanced language detection: first try filename, then content patterns"""
+        
+        # First, try to detect from filename if provided
+        if filename:
+            lang_from_filename = self.detect_language_from_filename(filename)
+            if lang_from_filename:
+                return lang_from_filename
+        
+        # If filename detection fails, fall back to content analysis
         lines = code_text.split('\n')
         first_lines = '\n'.join(lines[:5]).lower()  # Check first 5 lines
         
@@ -303,7 +490,7 @@ class RentryUploader:
         
         return None  # No language detected
 
-    def format_code(self, code_text, language=None):
+    def format_code(self, code_text, language=None, filename=None):
         """Format code based on detected or specified language"""
         try:
             # Ensure code_text is a string
@@ -312,7 +499,7 @@ class RentryUploader:
             
             # If no language specified, try to detect it
             if not language:
-                language = self.detect_language(code_text)
+                language = self.detect_language(code_text, filename)
             
             # Apply appropriate formatting based on language
             formatted_code = None
@@ -553,6 +740,102 @@ class RentryUploader:
         
         return '\n'.join(formatted_lines)
 
+    def delete_paste(self, url_slug, edit_code):
+        """Delete a paste from rentry.co"""
+        try:
+            if not url_slug or not edit_code:
+                return {"error": "URL slug and edit code are required for deletion"}
+            
+            # First, verify the edit code is valid by trying to access the edit page
+            edit_url = f"{self.base_url}/{url_slug}/edit"
+            
+            # Get CSRF token and check if edit page is accessible
+            csrf_token = self.get_csrf_token(edit_url)
+            if not csrf_token:
+                return {"error": "Failed to access edit page - paste may not exist or edit code is invalid"}
+            
+            # Try to edit with a test to validate the edit code first
+            headers = {
+                'Referer': edit_url,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+            
+            # First, try to validate edit code by making a small edit
+            test_data = {
+                'csrfmiddlewaretoken': csrf_token,
+                'edit_code': edit_code,
+                'text': '[TESTING_EDIT_CODE]'  # Test content to validate edit code
+            }
+            
+            test_response = self.session.post(edit_url, data=test_data, headers=headers, allow_redirects=True)
+            
+            if test_response.status_code == 200:
+                content = test_response.text.lower()
+                
+                # Check for edit code validation errors
+                if ('invalid edit code' in content or 
+                    'wrong edit code' in content or 
+                    'incorrect edit code' in content or
+                    'edit code is required' in content or
+                    'text-danger' in content):
+                    return {"error": "Invalid edit code - cannot access paste for editing. The saved edit code may have changed or expired. Please check the saved edit code in your dashboard or try entering the current edit code manually."}
+                
+                # If we reach here, edit code is valid. Now try to delete the content
+                # Get a fresh CSRF token for the actual deletion
+                csrf_token = self.get_csrf_token(edit_url)
+                if not csrf_token:
+                    return {"error": "Failed to get CSRF token for deletion"}
+                
+                # Try to clear/delete the content
+                delete_data = {
+                    'csrfmiddlewaretoken': csrf_token,
+                    'edit_code': edit_code,
+                    'text': '[DELETED BY USER]'  # Replace content with deletion marker
+                }
+                
+                delete_response = self.session.post(edit_url, data=delete_data, headers=headers, allow_redirects=True)
+                
+                if delete_response.status_code == 200:
+                    delete_content = delete_response.text.lower()
+                    
+                    # Check for deletion errors
+                    if ('invalid edit code' in delete_content or 
+                        'wrong edit code' in delete_content or 
+                        'incorrect edit code' in delete_content or
+                        'text-danger' in delete_content):
+                        return {"error": "Edit code became invalid during deletion process. The edit code may have changed or expired. Please verify the correct edit code and try again."}
+                    
+                    # Verify the content was actually changed by checking the view page
+                    view_url = f"{self.base_url}/{url_slug}"
+                    view_response = self.session.get(view_url)
+                    
+                    if view_response.status_code == 200:
+                        view_content = view_response.text
+                        if '[DELETED BY USER]' in view_content:
+                            return {
+                                "success": True,
+                                "message": "Paste content successfully deleted from rentry.co",
+                                "note": "Content replaced with deletion marker - paste URL still exists but content is removed"
+                            }
+                        else:
+                            return {"error": "Content deletion failed - paste content was not changed"}
+                    else:
+                        # If we can't verify, assume it worked since edit succeeded
+                        return {
+                            "success": True,
+                            "message": "Paste content likely deleted from rentry.co",
+                            "note": "Could not verify deletion but edit operation succeeded"
+                        }
+                else:
+                    return {"error": "Failed to delete content - server error during deletion"}
+            else:
+                return {"error": "Failed to validate edit code - server error"}
+            
+        except requests.exceptions.RequestException as e:
+            return {"error": f"Network error during deletion: {str(e)}"}
+        except Exception as e:
+            return {"error": f"Unexpected error during deletion: {str(e)}"}
+
 # Initialize uploader
 uploader = RentryUploader()
 
@@ -592,6 +875,20 @@ def upload():
         result = uploader.upload_code(code_text, custom_url, custom_edit_code)
         
         if result.get('success'):
+            # Save upload to user's account if logged in and save_to_account is not explicitly false
+            save_to_account = data.get('save_to_account', True)  # Default to True
+            if save_to_account:
+                saved_upload = save_upload_for_user(
+                    rentry_url=result['url'],
+                    code_text=code_text,
+                    custom_url=custom_url,
+                    has_edit_code=bool(custom_edit_code),
+                    edit_code=result.get('edit_code'),
+                    filename=data.get('filename')
+                )
+                if saved_upload:
+                    result['saved_to_account'] = True
+            
             return jsonify(result)
         else:
             return jsonify(result), 400
@@ -611,15 +908,17 @@ def format_code():
         if not code_text:
             return jsonify({"error": "Code cannot be empty"}), 400
         
-        # Get optional language hint
+        # Get optional language hint and filename
         language = data.get('language') or ''
         if isinstance(language, str):
             language = language.strip() or None
         else:
             language = None
         
+        filename = data.get('filename')
+        
         # Format the code
-        formatted_code = uploader.format_code(code_text, language)
+        formatted_code = uploader.format_code(code_text, language, filename)
         
         return jsonify({
             "success": True,
@@ -630,5 +929,163 @@ def format_code():
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
 
+# Authentication Routes
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now registered!')
+        return redirect(url_for('login'))
+    
+    return render_template('register.html', title='Register', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            next_page = request.args.get('next')
+            if not next_page or url_for(next_page) != next_page:
+                next_page = url_for('dashboard')
+            return redirect(next_page)
+        # Enhanced error message with category
+        flash('🔒 Login failed! The email or password you entered is incorrect. Please check your credentials and try again.', 'error')
+    
+    return render_template('login.html', title='Sign In', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    uploads = Upload.query.filter_by(user_id=current_user.id).order_by(Upload.created_at.desc()).all()
+    return render_template('dashboard.html', title='My Uploads', uploads=uploads)
+
+@app.route('/dashboard/delete/<int:upload_id>', methods=['POST'])
+@login_required
+def delete_upload(upload_id):
+    upload = Upload.query.filter_by(id=upload_id, user_id=current_user.id).first_or_404()
+    db.session.delete(upload)
+    db.session.commit()
+    flash('Upload removed from your account.')
+    return redirect(url_for('dashboard'))
+
+@app.route('/dashboard/delete-both/<int:upload_id>', methods=['POST'])
+@login_required
+def delete_upload_and_paste(upload_id):
+    upload = Upload.query.filter_by(id=upload_id, user_id=current_user.id).first_or_404()
+    
+    data = request.get_json()
+    edit_code = data.get('edit_code', '').strip() if data else ''
+    
+    # Use saved edit code if available and user didn't provide one
+    if not edit_code and upload.edit_code:
+        edit_code = upload.edit_code
+    
+    if not edit_code:
+        return jsonify({'error': 'Edit code is required to delete from rentry.co'}), 400
+    
+    # Try to delete from rentry.co first
+    url_slug = upload.url_slug
+    delete_result = uploader.delete_paste(url_slug, edit_code)
+    
+    if delete_result.get('success'):
+        # If deletion from rentry.co succeeded, also remove from account
+        db.session.delete(upload)
+        db.session.commit()
+        
+        message = delete_result.get('message', 'Deleted successfully')
+        if delete_result.get('note'):
+            message += f" ({delete_result['note']})"
+            
+        return jsonify({
+            'success': True,
+            'message': f'✅ {message} and removed from your account'
+        })
+    else:
+        # If deletion from rentry.co failed, don't remove from account
+        return jsonify({
+            'error': f"❌ Failed to delete from rentry.co: {delete_result.get('error', 'Unknown error')}"
+        }), 400
+
+@app.route('/dashboard/check-edit-code/<int:upload_id>', methods=['POST'])
+@login_required
+def check_edit_code(upload_id):
+    upload = Upload.query.filter_by(id=upload_id, user_id=current_user.id).first_or_404()
+    
+    return jsonify({
+        'has_saved_edit_code': upload.has_edit_code,
+        'edit_code': upload.edit_code if upload.has_edit_code else None
+    })
+
+@app.route('/dashboard/edit-title/<int:upload_id>', methods=['POST'])
+@login_required
+def edit_upload_title(upload_id):
+    upload = Upload.query.filter_by(id=upload_id, user_id=current_user.id).first_or_404()
+    
+    data = request.get_json()
+    new_title = data.get('title', '').strip()
+    
+    if not new_title:
+        return jsonify({'error': 'Title cannot be empty.'}), 400
+    
+    if len(new_title) > 200:
+        return jsonify({'error': 'Title too long (max 200 characters).'}), 400
+    
+    upload.title = new_title
+    upload.updated_at = datetime.utcnow()
+    db.session.commit()
+    
+    return jsonify({'success': True, 'title': new_title})
+
+# Helper function to save upload for logged-in users
+def save_upload_for_user(rentry_url, code_text, custom_url=None, has_edit_code=False, edit_code=None, filename=None):
+    if current_user.is_authenticated:
+        # Generate title from custom URL or auto-generate
+        if custom_url:
+            title = custom_url
+        else:
+            # Extract URL from rentry_url
+            title = rentry_url.split('/')[-1]
+        
+        # Detect language using filename if available
+        language = uploader.detect_language(code_text, filename)
+        
+        upload = Upload(
+            user_id=current_user.id,
+            rentry_url=rentry_url,
+            title=title,
+            language=language,
+            has_edit_code=has_edit_code,
+            edit_code=edit_code
+        )
+        
+        db.session.add(upload)
+        db.session.commit()
+        return upload
+    return None
+
+# Database initialization
+def create_tables():
+    with app.app_context():
+        db.create_all()
+
 if __name__ == '__main__':
+    create_tables()
     app.run(debug=True, host='0.0.0.0', port=8000) 
