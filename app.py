@@ -1054,6 +1054,24 @@ def edit_upload_title(upload_id):
     
     return jsonify({'success': True, 'title': new_title})
 
+@app.route('/dashboard/edit-language/<int:upload_id>', methods=['POST'])
+@login_required
+def edit_upload_language(upload_id):
+    upload = Upload.query.filter_by(id=upload_id, user_id=current_user.id).first_or_404()
+    
+    data = request.get_json()
+    new_language = data.get('language', '').strip()
+    
+    # Allow empty language (will show as "Unknown")
+    if new_language and len(new_language) > 50:
+        return jsonify({'error': 'Language tag too long (max 50 characters).'}), 400
+    
+    upload.language = new_language if new_language else None
+    upload.updated_at = datetime.utcnow()
+    db.session.commit()
+    
+    return jsonify({'success': True, 'language': new_language})
+
 # Helper function to save upload for logged-in users
 def save_upload_for_user(rentry_url, code_text, custom_url=None, has_edit_code=False, edit_code=None, filename=None):
     if current_user.is_authenticated:

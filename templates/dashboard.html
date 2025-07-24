@@ -439,6 +439,44 @@
             background-color: var(--hover-color);
         }
 
+        /* Language editing styles */
+        .language-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-display {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .language-select, .language-custom-input {
+            flex: 1;
+            min-width: 0;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .edit-language-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.2rem;
+            border-radius: 4px;
+            opacity: 0.7;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        .edit-language-btn:hover {
+            opacity: 1;
+            background-color: var(--hover-color);
+        }
+
         .upload-url {
             max-width: 200px;
             overflow: hidden;
@@ -781,11 +819,45 @@
                                 </div>
                             </td>
                             <td>
-                                {% if upload.language %}
-                                    <span class="language-tag">{{ upload.language }}</span>
-                                {% else %}
-                                    <span style="opacity: 0.5;">Unknown</span>
-                                {% endif %}
+                                <div class="language-container">
+                                    <div class="language-display" id="language-{{ upload.id }}">
+                                        {% if upload.language %}
+                                            <span class="language-tag">{{ upload.language }}</span>
+                                        {% else %}
+                                            <span style="opacity: 0.5;">Unknown</span>
+                                        {% endif %}
+                                    </div>
+                                    <select class="language-select" id="language-select-{{ upload.id }}" style="display: none;">
+                                        <option value="">Unknown</option>
+                                        <option value="python">Python</option>
+                                        <option value="javascript">JavaScript</option>
+                                        <option value="typescript">TypeScript</option>
+                                        <option value="java">Java</option>
+                                        <option value="cpp">C++</option>
+                                        <option value="c">C</option>
+                                        <option value="csharp">C#</option>
+                                        <option value="php">PHP</option>
+                                        <option value="ruby">Ruby</option>
+                                        <option value="go">Go</option>
+                                        <option value="rust">Rust</option>
+                                        <option value="swift">Swift</option>
+                                        <option value="kotlin">Kotlin</option>
+                                        <option value="html">HTML</option>
+                                        <option value="css">CSS</option>
+                                        <option value="scss">SCSS</option>
+                                        <option value="json">JSON</option>
+                                        <option value="xml">XML</option>
+                                        <option value="yaml">YAML</option>
+                                        <option value="sql">SQL</option>
+                                        <option value="bash">Bash</option>
+                                        <option value="powershell">PowerShell</option>
+                                        <option value="markdown">Markdown</option>
+                                        <option value="text">Text</option>
+                                        <option value="custom">Custom...</option>
+                                    </select>
+                                    <input type="text" class="language-custom-input" id="language-custom-{{ upload.id }}" placeholder="Enter custom language..." style="display: none;" />
+                                    <button class="edit-language-btn" onclick="editLanguage({{ upload.id }})" title="Edit language tag">🏷️</button>
+                                </div>
                             </td>
                             <td>
                                 <div class="date-text" data-utc-time="{{ upload.created_at.isoformat() }}Z">{{ upload.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
@@ -1365,6 +1437,142 @@
                 closeEditCodeModal();
             }
         });
+
+        // Language editing functionality
+        function editLanguage(uploadId) {
+            const languageDisplay = document.getElementById(`language-${uploadId}`);
+            const languageSelect = document.getElementById(`language-select-${uploadId}`);
+            const languageCustom = document.getElementById(`language-custom-${uploadId}`);
+            const editBtn = languageDisplay.parentElement.querySelector('.edit-language-btn');
+            
+            if (languageSelect.style.display === 'none') {
+                // Switch to edit mode
+                const currentLanguage = languageDisplay.textContent.trim();
+                const isUnknown = currentLanguage === 'Unknown';
+                
+                // Set the current language in the select
+                if (!isUnknown && currentLanguage) {
+                    // Check if it's in the predefined options
+                    const option = Array.from(languageSelect.options).find(opt => opt.text.toLowerCase() === currentLanguage.toLowerCase());
+                    if (option) {
+                        languageSelect.value = option.value;
+                    } else {
+                        // Custom language
+                        languageSelect.value = 'custom';
+                        languageCustom.value = currentLanguage;
+                        languageCustom.style.display = 'block';
+                    }
+                } else {
+                    languageSelect.value = '';
+                }
+                
+                // Show edit controls
+                languageDisplay.style.display = 'none';
+                languageSelect.style.display = 'block';
+                languageSelect.focus();
+                editBtn.textContent = '✅';
+                editBtn.title = 'Save language';
+                
+                // Handle select change
+                languageSelect.onchange = function() {
+                    if (this.value === 'custom') {
+                        languageCustom.style.display = 'block';
+                        languageCustom.focus();
+                    } else {
+                        languageCustom.style.display = 'none';
+                    }
+                };
+                
+                // Handle Enter key on custom input
+                languageCustom.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        saveLanguage(uploadId);
+                    }
+                };
+                
+                // Handle Escape key
+                const handleEscape = function(e) {
+                    if (e.key === 'Escape') {
+                        cancelLanguageEdit(uploadId);
+                    }
+                };
+                languageSelect.onkeydown = handleEscape;
+                languageCustom.onkeydown = handleEscape;
+                
+            } else {
+                // Save the language
+                saveLanguage(uploadId);
+            }
+        }
+        
+        function saveLanguage(uploadId) {
+            const languageDisplay = document.getElementById(`language-${uploadId}`);
+            const languageSelect = document.getElementById(`language-select-${uploadId}`);
+            const languageCustom = document.getElementById(`language-custom-${uploadId}`);
+            const editBtn = languageDisplay.parentElement.querySelector('.edit-language-btn');
+            
+            let newLanguage = '';
+            if (languageSelect.value === 'custom') {
+                newLanguage = languageCustom.value.trim();
+            } else {
+                newLanguage = languageSelect.value;
+            }
+            
+            // Show loading
+            editBtn.textContent = '⏳';
+            editBtn.disabled = true;
+            
+            fetch(`/dashboard/edit-language/${uploadId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ language: newLanguage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the display
+                    if (data.language) {
+                        languageDisplay.innerHTML = `<span class="language-tag">${data.language}</span>`;
+                    } else {
+                        languageDisplay.innerHTML = '<span style="opacity: 0.5;">Unknown</span>';
+                    }
+                    
+                    // Reset edit controls
+                    languageDisplay.style.display = 'block';
+                    languageSelect.style.display = 'none';
+                    languageCustom.style.display = 'none';
+                    editBtn.textContent = '🏷️';
+                    editBtn.title = 'Edit language tag';
+                    editBtn.disabled = false;
+                } else {
+                    alert('Error: ' + data.error);
+                    editBtn.textContent = '✅';
+                    editBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to save language');
+                editBtn.textContent = '✅';
+                editBtn.disabled = false;
+            });
+        }
+        
+        function cancelLanguageEdit(uploadId) {
+            const languageDisplay = document.getElementById(`language-${uploadId}`);
+            const languageSelect = document.getElementById(`language-select-${uploadId}`);
+            const languageCustom = document.getElementById(`language-custom-${uploadId}`);
+            const editBtn = languageDisplay.parentElement.querySelector('.edit-language-btn');
+            
+            // Reset to display mode
+            languageDisplay.style.display = 'block';
+            languageSelect.style.display = 'none';
+            languageCustom.style.display = 'none';
+            editBtn.textContent = '🏷️';
+            editBtn.title = 'Edit language tag';
+        }
 
         // Handle window resize and scroll to reposition dropdowns
         function closeAllDropdowns() {
