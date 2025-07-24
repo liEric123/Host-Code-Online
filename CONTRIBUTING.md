@@ -2,14 +2,14 @@
 
 Thanks for your interest! We welcome all contributions.
 
-## 🤝 How to Contribute
+## How to Contribute
 
-- **🐛 Report bugs**: Open an issue with details
-- **💡 Suggest features**: Share your ideas
-- **🔧 Fix issues**: Pick up existing issues
-- **✨ Add features**: Implement new functionality
+- Report bugs: Open an issue with details
+- Suggest features: Share your ideas
+- Fix issues: Pick up existing issues
+- Add features: Implement new functionality
 
-## 🚀 Getting Started
+## Getting Started
 
 ```bash
 git clone https://github.com/yourusername/Host-Code-Online.git
@@ -20,15 +20,15 @@ python3 app.py
 
 Visit: `http://localhost:8000`
 
-## 📦 Making Changes
+## Making Changes
 
-1. **Create a branch**: `git checkout -b feature/your-feature`
-2. **Make changes**: Keep focused, follow existing style
-3. **Test thoroughly**: Test all pages (`/`, `/paste`, `/files`)
-4. **Commit**: `git commit -m "feat: add your feature"`
-5. **Push & PR**: Create a pull request
+1. Create a branch: `git checkout -b feature/your-feature`
+2. Make changes: Keep focused, follow existing style
+3. Test thoroughly: Test all pages (`/`, `/paste`, `/files`)
+4. Commit: `git commit -m "feat: add your feature"`
+5. Push & PR: Create a pull request
 
-## 📋 Guidelines
+## Guidelines
 
 **Code Style**:
 - Python: Follow PEP 8
@@ -47,7 +47,7 @@ Visit: `http://localhost:8000`
 - Verify light/dark mode toggle
 - Test drag & drop functionality
 
-## 🐛 Reporting Issues
+## Reporting Issues
 
 Include:
 - OS and browser version
@@ -55,17 +55,17 @@ Include:
 - Expected vs actual behavior
 - Screenshots if helpful
 
-## 💡 Feature Requests
+## Feature Requests
 
 Describe:
 - Problem you're solving
 - Proposed solution
 - Why it's useful
 
-## 🎯 Good First Issues
+## Good First Issues
 
 Look for labels: `good first issue`, `help wanted`, `bug`
 
 ---
 
-Happy coding! 🚀 
+Happy coding! 

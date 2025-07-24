@@ -1,4 +1,4 @@
-# 🚀 Host Code Online
+# Host Code Online
 
 Fast, clean web app for sharing code snippets via rentry.co. No registration required.
 
@@ -6,17 +6,17 @@ Fast, clean web app for sharing code snippets via rentry.co. No registration req
 ![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## ✨ Features
+## Features
 
-- **📄 Single Paste**: Quick code sharing with file upload support
-- **📂 Multi-File Upload**: Advanced file management with preview system
-- **🎯 Smart Upload Modes**: Combine files or create separate pastes
-- **✨ Code Formatting**: Auto-format code before uploading
-- **🔒 Security Options**: Write-once pastes or custom edit codes
-- **🌙 Dark/Light Mode**: Built-in theme toggle
-- **📱 Mobile Friendly**: Responsive design for all devices
+- **Single Paste**: Quick code sharing with file upload support
+- **Multi-File Upload**: Advanced file management with preview system
+- **Smart Upload Modes**: Combine files or create separate pastes
+- **Code Formatting**: Auto-format code before uploading
+- **Security Options**: Write-once pastes or custom edit codes
+- **Dark/Light Mode**: Built-in theme toggle
+- **Mobile Friendly**: Responsive design for all devices
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/liEric123/Host-Code-Online.git
@@ -27,7 +27,7 @@ python3 app.py
 
 Open: `http://localhost:8000`
 
-## 🎮 How to Use
+## How to Use
 
 **Landing Page** → Choose your upload method:
 - **Single Paste**: Perfect for quick snippets or single files
@@ -44,18 +44,18 @@ Open: `http://localhost:8000`
 - Choose: combine into one paste or create separate pastes
 - Set edit codes individually or use same for all
 
-## 🔧 Supported File Types
+## Supported File Types
 
 Code files: `.py` `.js` `.ts` `.html` `.css` `.json` `.cpp` `.java` `.php` `.rb` `.go` `.rs` `.md` `.sql` `.yml` and more.
 
-## 🤝 Contributing
+## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## 📝 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
-⭐ **Star this repo if it's helpful!** 
+**Star this repo if it's helpful!** 
