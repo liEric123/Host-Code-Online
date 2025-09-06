@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Uploads - Host Code Online</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --secondary-color: #2196F3;
+            --secondary-hover: #1976D2;
+            --danger-color: #f44336;
+            --danger-hover: #d32f2f;
+            --background: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --background: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --border-color: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--background);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a,
+        .nav-links .user-info {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .user-info {
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .page-header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-actions {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-hover);
+        }
+
+        .uploads-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .uploads-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .uploads-header h2 {
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .upload-count {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .uploads-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .uploads-table th,
+        .uploads-table td {
+            padding: 1rem 2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .uploads-table th {
+            background: var(--background);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .uploads-table tr:hover {
+            background: var(--background);
+        }
+
+        .upload-title {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .upload-preview {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .language-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .date-text {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .empty-state p {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .flash-messages {
+            margin-bottom: 2rem;
+        }
+
+        .flash-message {
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .flash-message.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+
+        [data-theme="dark"] .flash-message.success {
+            background: #1a3d1a;
+            color: #90ee90;
+            border-color: #228b22;
+        }
+
+        /* User dropdown styles */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: var(--shadow);
+            min-width: 150px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            border-radius: 4px;
+            margin: 0.2rem;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .uploads-table {
+                font-size: 0.9rem;
+            }
+
+            .uploads-table th,
+            .uploads-table td {
+                padding: 0.8rem 1rem;
+            }
+
+
+
+            .dashboard-actions {
+                flex-direction: column;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+
+        .upload-title-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upload-title {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .title-edit-input {
+            flex: 1;
+            min-width: 0;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .edit-title-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.2rem;
+            border-radius: 4px;
+            opacity: 0.7;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        .edit-title-btn:hover {
+            opacity: 1;
+            background-color: var(--hover-color);
+        }
+
+        /* Language editing styles */
+        .language-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-display {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .language-select, .language-custom-input {
+            flex: 1;
+            min-width: 0;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .edit-language-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.2rem;
+            border-radius: 4px;
+            opacity: 0.7;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        .edit-language-btn:hover {
+            opacity: 1;
+            background-color: var(--hover-color);
+        }
+
+        .upload-url {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .upload-url a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .upload-url a:hover {
+            text-decoration: underline;
+        }
+
+        .edit-code-container {
+            margin-top: 0.5rem;
+        }
+
+        .reveal-edit-code-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .reveal-edit-code-btn:hover {
+            background-color: var(--hover-color);
+        }
+
+        .edit-code-revealed {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .edit-code-text {
+            font-family: monospace;
+            font-size: 0.9rem;
+            background-color: var(--input-bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+        }
+
+        .copy-btn-small {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn-small:hover {
+            background: var(--primary-color-hover);
+        }
+
+        .footer {
+            background: var(--card-bg);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer p {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Delete dropdown styles */
+        .delete-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .delete-dropdown-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+        }
+
+        .delete-dropdown-btn:hover {
+            background: var(--danger-hover);
+        }
+
+        .delete-dropdown-menu {
+            position: fixed;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .delete-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Ensure the uploads container doesn't clip the dropdown */
+        .uploads-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: visible;
+        }
+
+        .uploads-table {
+            width: 100%;
+            border-collapse: collapse;
+            position: relative;
+        }
+
+        .delete-option {
+            display: block;
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 4px;
+            margin: 0.2rem;
+            font-size: 0.9rem;
+        }
+
+        .delete-option:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .delete-option.delete-both:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Edit code modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .edit-code-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-cancel:hover {
+            background: #999;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                🔗 Host Code Online
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/paste">Single File</a>
+                <a href="/files">Multi File</a>
+                <div style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+                    <div class="user-dropdown">
+                        <button class="user-button" onclick="toggleUserDropdown()">
+                            👤 {{ current_user.username }} ▼
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="/dashboard">📊 Dashboard</a>
+                            <a href="/logout">🚪 Logout</a>
+                        </div>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        🌙
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>My Uploads</h1>
+            <p>Manage and track your code uploads</p>
+        </div>
+
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/paste" class="btn btn-primary">📄 Create Single Paste</a>
+            <a href="/files" class="btn btn-secondary">🗂️ Upload Multiple Files</a>
+        </div>
+
+        <div class="uploads-container">
+            <div class="uploads-header">
+                <h2>Upload History</h2>
+                <span class="upload-count">{{ uploads|length }} upload{{ 's' if uploads|length != 1 else '' }}</span>
+            </div>
+
+            {% if uploads %}
+                <table class="uploads-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>URL</th>
+                            <th>Language</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for upload in uploads %}
+                        <tr>
+                            <td>
+                                <div class="upload-title-container">
+                                    <div class="upload-title" id="title-{{ upload.id }}">{{ upload.title }}</div>
+                                    <input type="text" class="title-edit-input" id="title-input-{{ upload.id }}" value="{{ upload.title }}" style="display: none;">
+                                    <button class="edit-title-btn" onclick="editTitle({{ upload.id }})" title="Edit title">✏️</button>
+                                </div>
+                                {% if upload.has_edit_code %}
+                                    <div class="edit-code-container">
+                                        <button class="reveal-edit-code-btn" onclick="revealEditCode({{ upload.id }})" title="Click to reveal edit code">
+                                            🔐 Click to reveal edit code
+                                        </button>
+                                        <div class="edit-code-revealed" id="edit-code-{{ upload.id }}" style="display: none;">
+                                            <span class="edit-code-text">{{ upload.edit_code or 'auto-generated' }}</span>
+                                            <button class="copy-btn-small" onclick="copyToClipboard('{{ upload.edit_code or 'auto-generated' }}')">Copy</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="upload-url">
+                                    <a href="{{ upload.rentry_url }}" target="_blank" title="{{ upload.rentry_url }}">{{ upload.url_slug }}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="language-container">
+                                    <div class="language-display" id="language-{{ upload.id }}">
+                                        {% if upload.language %}
+                                            <span class="language-tag">{{ upload.language }}</span>
+                                        {% else %}
+                                            <span style="opacity: 0.5;">Unknown</span>
+                                        {% endif %}
+                                    </div>
+                                    <select class="language-select" id="language-select-{{ upload.id }}" style="display: none;">
+                                        <option value="">Unknown</option>
+                                        <option value="python">Python</option>
+                                        <option value="javascript">JavaScript</option>
+                                        <option value="typescript">TypeScript</option>
+                                        <option value="java">Java</option>
+                                        <option value="cpp">C++</option>
+                                        <option value="c">C</option>
+                                        <option value="csharp">C#</option>
+                                        <option value="php">PHP</option>
+                                        <option value="ruby">Ruby</option>
+                                        <option value="go">Go</option>
+                                        <option value="rust">Rust</option>
+                                        <option value="swift">Swift</option>
+                                        <option value="kotlin">Kotlin</option>
+                                        <option value="html">HTML</option>
+                                        <option value="css">CSS</option>
+                                        <option value="scss">SCSS</option>
+                                        <option value="json">JSON</option>
+                                        <option value="xml">XML</option>
+                                        <option value="yaml">YAML</option>
+                                        <option value="sql">SQL</option>
+                                        <option value="bash">Bash</option>
+                                        <option value="powershell">PowerShell</option>
+                                        <option value="markdown">Markdown</option>
+                                        <option value="text">Text</option>
+                                        <option value="custom">Custom...</option>
+                                    </select>
+                                    <input type="text" class="language-custom-input" id="language-custom-{{ upload.id }}" placeholder="Enter custom language..." style="display: none;" />
+                                    <button class="edit-language-btn" onclick="editLanguage({{ upload.id }})" title="Edit language tag">🏷️</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="date-text" data-utc-time="{{ upload.created_at.isoformat() }}Z">{{ upload.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <a href="{{ upload.rentry_url }}" target="_blank" class="btn btn-primary btn-small">View</a>
+                                    <div class="delete-dropdown">
+                                        <button class="btn btn-danger btn-small delete-dropdown-btn" onclick="toggleDeleteDropdown({{ upload.id }})">
+                                            Delete ▼
+                                        </button>
+                                        <div class="delete-dropdown-menu" id="deleteDropdown{{ upload.id }}">
+                                            <button onclick="deleteFromAccount({{ upload.id }})" class="delete-option">
+                                                🗑️ Remove from Account Only
+                                            </button>
+                                            <button onclick="deleteFromBoth({{ upload.id }})" class="delete-option delete-both">
+                                                🔥 Delete from Account & rentry.co
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <h3>No uploads yet</h3>
+                    <p>Start uploading code to see your history here. Your uploads will be automatically saved to your account.</p>
+                    <a href="/paste" class="btn btn-primary">Upload Your First Code</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Edit Code Modal -->
+    <div id="editCodeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🔐 Enter Edit Code</h3>
+                <button class="close-btn" onclick="closeEditCodeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Please enter the edit code to delete this paste from rentry.co:</p>
+                <input type="text" id="editCodeInput" class="edit-code-input" placeholder="Enter edit code..." />
+                <div id="editCodeHint" style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.7; display: none;">
+                    📝 This is your saved edit code. You can modify it if needed.
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                    💡 This will permanently delete the paste from rentry.co and remove it from your account.
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-cancel btn-small" onclick="closeEditCodeModal()">Cancel</button>
+                <button class="btn btn-danger btn-small" id="confirmDeleteBtn" onclick="confirmDeleteFromBoth()">
+                    🔥 Delete Forever
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle;
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        setThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function setThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+        }
+
+        function updateThemeIcon(theme) {
+            themeIcon.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+                themeIcon.style.transform = 'scale(1)';
+                themeToggle.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+            }, 125);
+        }
+
+        // User dropdown functionality
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const userButton = document.querySelector('.user-button');
+            
+            if (dropdown && !userButton.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Title editing functionality
+        function editTitle(uploadId) {
+            const titleDiv = document.getElementById(`title-${uploadId}`);
+            const titleInput = document.getElementById(`title-input-${uploadId}`);
+            const editBtn = titleDiv.parentElement.querySelector('.edit-title-btn');
+            
+            if (titleInput.style.display === 'none') {
+                // Switch to edit mode
+                titleDiv.style.display = 'none';
+                titleInput.style.display = 'block';
+                titleInput.focus();
+                titleInput.select();
+                editBtn.textContent = '✅';
+                editBtn.title = 'Save title';
+                
+                // Handle Enter key
+                titleInput.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        saveTitle(uploadId);
+                    }
+                };
+                
+                // Handle Escape key
+                titleInput.onkeydown = function(e) {
+                    if (e.key === 'Escape') {
+                        cancelEdit(uploadId);
+                    }
+                };
+            } else {
+                // Save the title
+                saveTitle(uploadId);
+            }
+        }
+        
+        function saveTitle(uploadId) {
+            const titleDiv = document.getElementById(`title-${uploadId}`);
+            const titleInput = document.getElementById(`title-input-${uploadId}`);
+            const editBtn = titleDiv.parentElement.querySelector('.edit-title-btn');
+            const newTitle = titleInput.value.trim();
+            
+            if (!newTitle) {
+                alert('Title cannot be empty');
+                return;
+            }
+            
+            // Show loading
+            editBtn.textContent = '⏳';
+            editBtn.disabled = true;
+            
+            fetch(`/dashboard/edit-title/${uploadId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title: newTitle })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the display
+                    titleDiv.textContent = data.title;
+                    titleDiv.style.display = 'block';
+                    titleInput.style.display = 'none';
+                    editBtn.textContent = '✏️';
+                    editBtn.title = 'Edit title';
+                    editBtn.disabled = false;
+                } else {
+                    alert('Error: ' + data.error);
+                    editBtn.textContent = '✅';
+                    editBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to save title');
+                editBtn.textContent = '✅';
+                editBtn.disabled = false;
+            });
+        }
+        
+        function cancelEdit(uploadId) {
+            const titleDiv = document.getElementById(`title-${uploadId}`);
+            const titleInput = document.getElementById(`title-input-${uploadId}`);
+            const editBtn = titleDiv.parentElement.querySelector('.edit-title-btn');
+            
+            // Restore original title
+            titleInput.value = titleDiv.textContent;
+            
+            // Switch back to display mode
+            titleDiv.style.display = 'block';
+            titleInput.style.display = 'none';
+            editBtn.textContent = '✏️';
+            editBtn.title = 'Edit title';
+        }
+
+        // Edit code reveal functionality
+        function revealEditCode(uploadId) {
+            const btn = document.querySelector(`button[onclick="revealEditCode(${uploadId})"]`);
+            const revealedDiv = document.getElementById(`edit-code-${uploadId}`);
+            
+            if (revealedDiv.style.display === 'none') {
+                // Show the edit code
+                revealedDiv.style.display = 'flex';
+                btn.textContent = '🔐 Hide edit code';
+                btn.title = 'Click to hide edit code';
+            } else {
+                // Hide the edit code
+                revealedDiv.style.display = 'none';
+                btn.textContent = '🔐 Click to reveal edit code';
+                btn.title = 'Click to reveal edit code';
+            }
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show feedback
+                const tooltip = document.createElement('div');
+                tooltip.textContent = 'Copied!';
+                tooltip.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: var(--primary-color);
+                    color: white;
+                    padding: 0.5rem 1rem;
+                    border-radius: 4px;
+                    z-index: 1000;
+                    font-size: 0.9rem;
+                `;
+                document.body.appendChild(tooltip);
+                
+                setTimeout(() => {
+                    document.body.removeChild(tooltip);
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy to clipboard');
+            });
+        }
+
+        // Convert UTC timestamps to local time
+        function convertTimestampsToLocalTime() {
+            console.log('Converting timestamps to local time...');
+            const dateElements = document.querySelectorAll('.date-text[data-utc-time]');
+            console.log('Found', dateElements.length, 'date elements');
+            
+            dateElements.forEach(element => {
+                const utcTime = element.getAttribute('data-utc-time');
+                console.log('Processing UTC time:', utcTime);
+                
+                if (utcTime) {
+                    try {
+                        // Ensure the UTC time string is properly formatted
+                        let dateToConvert = utcTime;
+                        if (!utcTime.endsWith('Z') && !utcTime.includes('+')) {
+                            dateToConvert = utcTime + 'Z'; // Add Z to indicate UTC
+                        }
+                        
+                        const date = new Date(dateToConvert);
+                        
+                        // Check if date is valid
+                        if (isNaN(date.getTime())) {
+                            console.error('Invalid date:', utcTime);
+                            return;
+                        }
+                        
+                        const now = new Date();
+                        
+                        // Format date based on how recent it is
+                        let formattedTime;
+                        const timeDiff = now - date;
+                        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                        
+                        if (daysDiff === 0) {
+                            // Today - show time only
+                            const timeStr = date.toLocaleTimeString([], { 
+                                hour: '2-digit', 
+                                minute: '2-digit' 
+                            });
+                            formattedTime = `Today at ${timeStr}`;
+                        } else if (daysDiff === 1) {
+                            // Yesterday
+                            const timeStr = date.toLocaleTimeString([], { 
+                                hour: '2-digit', 
+                                minute: '2-digit' 
+                            });
+                            formattedTime = `Yesterday at ${timeStr}`;
+                        } else if (daysDiff < 7) {
+                            // This week - show day name
+                            formattedTime = date.toLocaleDateString([], { 
+                                weekday: 'long',
+                                hour: '2-digit', 
+                                minute: '2-digit'
+                            });
+                        } else {
+                            // Older - show full date
+                            formattedTime = date.toLocaleDateString([], { 
+                                year: 'numeric', 
+                                month: 'short', 
+                                day: 'numeric',
+                                hour: '2-digit', 
+                                minute: '2-digit'
+                            });
+                        }
+                        
+                        console.log('Converted', utcTime, 'to', formattedTime);
+                        element.textContent = formattedTime;
+                        
+                        // Add tooltip with full timestamp
+                        element.title = `Full timestamp: ${date.toLocaleString()}`;
+                        
+                    } catch (error) {
+                        console.error('Error converting timestamp:', utcTime, error);
+                    }
+                }
+            });
+        }
+
+        // Initialize local time conversion when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            convertTimestampsToLocalTime();
+        });
+
+        // Enhanced delete functionality
+        let currentUploadId = null;
+
+        function toggleDeleteDropdown(uploadId) {
+            // Close all other dropdowns first
+            document.querySelectorAll('.delete-dropdown-menu').forEach(menu => {
+                if (menu.id !== `deleteDropdown${uploadId}`) {
+                    menu.classList.remove('show');
+                }
+            });
+
+            const dropdown = document.getElementById(`deleteDropdown${uploadId}`);
+            const button = dropdown.previousElementSibling; // The delete button
+            
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            } else {
+                // Position the dropdown relative to the button
+                const buttonRect = button.getBoundingClientRect();
+                const dropdownWidth = 200; // min-width from CSS
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Calculate horizontal position (try to align right edge with button right edge)
+                let left = buttonRect.right - dropdownWidth;
+                
+                // If dropdown would go off left edge, align with left edge of button
+                if (left < 10) {
+                    left = buttonRect.left;
+                }
+                
+                // If dropdown would still go off right edge, align to right edge of viewport
+                if (left + dropdownWidth > viewportWidth - 10) {
+                    left = viewportWidth - dropdownWidth - 10;
+                }
+                
+                // Calculate vertical position (try to position below button)
+                let top = buttonRect.bottom + 5;
+                
+                // If dropdown would go off bottom edge, position above button
+                if (top + 120 > viewportHeight - 10) { // Estimate dropdown height as 120px
+                    top = buttonRect.top - 120 - 5;
+                }
+                
+                // Set position
+                dropdown.style.left = `${left}px`;
+                dropdown.style.top = `${top}px`;
+                
+                // Show dropdown
+                dropdown.classList.add('show');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.delete-dropdown')) {
+                document.querySelectorAll('.delete-dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        function deleteFromAccount(uploadId) {
+            if (confirm('Are you sure you want to remove this upload from your account?\n\n• This will NOT delete the paste from rentry.co\n• The paste will remain accessible online\n• You will no longer see it in your dashboard')) {
+                // Show loading state on the delete button
+                const deleteBtn = document.querySelector(`#deleteDropdown${uploadId}`).previousElementSibling;
+                const originalText = deleteBtn.innerHTML;
+                deleteBtn.innerHTML = '⏳ Removing...';
+                deleteBtn.disabled = true;
+                
+                // Create a form and submit it (old-style deletion)
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/dashboard/delete/${uploadId}`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+            
+            // Close dropdown
+            document.getElementById(`deleteDropdown${uploadId}`).classList.remove('show');
+        }
+
+        function deleteFromBoth(uploadId) {
+            currentUploadId = uploadId;
+            
+            // Show loading state on the delete button
+            const deleteBtn = document.querySelector(`#deleteDropdown${uploadId}`).previousElementSibling;
+            const originalText = deleteBtn.innerHTML;
+            deleteBtn.innerHTML = '⏳ Loading...';
+            deleteBtn.disabled = true;
+            
+            // Check if this upload has a saved edit code
+            fetch(`/dashboard/check-edit-code/${uploadId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Reset button state
+                deleteBtn.innerHTML = originalText;
+                deleteBtn.disabled = false;
+                
+                // Always show the modal, but pre-populate with saved edit code if available
+                showEditCodeModal(uploadId, data.edit_code || '', data.has_saved_edit_code);
+            })
+            .catch(error => {
+                console.error('Error checking edit code:', error);
+                // Reset button state
+                deleteBtn.innerHTML = originalText;
+                deleteBtn.disabled = false;
+                // Show modal without pre-populated edit code
+                showEditCodeModal(uploadId, '', false);
+            });
+            
+            // Close dropdown
+            document.getElementById(`deleteDropdown${uploadId}`).classList.remove('show');
+        }
+
+        function showEditCodeModal(uploadId, prefilledEditCode = '', hasSavedEditCode = false) {
+            currentUploadId = uploadId;
+            
+            // Update modal message based on whether we have a saved edit code
+            const modalMessage = document.getElementById('modalMessage');
+            const editCodeHint = document.getElementById('editCodeHint');
+            
+            if (hasSavedEditCode && prefilledEditCode) {
+                modalMessage.textContent = 'Review and confirm the edit code to delete this paste from rentry.co:';
+                editCodeHint.style.display = 'block';
+            } else {
+                modalMessage.textContent = 'Please enter the edit code to delete this paste from rentry.co:';
+                editCodeHint.style.display = 'none';
+            }
+            
+            document.getElementById('editCodeModal').style.display = 'block';
+            document.getElementById('editCodeInput').value = prefilledEditCode;
+            document.getElementById('editCodeInput').focus();
+            
+            // Select all text if it's pre-filled so user can easily replace it
+            if (prefilledEditCode) {
+                document.getElementById('editCodeInput').select();
+            }
+        }
+
+        function closeEditCodeModal() {
+            document.getElementById('editCodeModal').style.display = 'none';
+            document.getElementById('editCodeHint').style.display = 'none';
+            currentUploadId = null;
+        }
+
+        function confirmDeleteFromBoth() {
+            const editCode = document.getElementById('editCodeInput').value.trim();
+            
+            if (!editCode) {
+                alert('Please enter the edit code to proceed with deletion.');
+                return;
+            }
+            
+            // Show loading state on the main delete button
+            const deleteBtn = document.querySelector(`#deleteDropdown${currentUploadId}`)?.previousElementSibling;
+            if (deleteBtn) {
+                deleteBtn.innerHTML = '🔥 Deleting...';
+                deleteBtn.disabled = true;
+            }
+            
+            performDeleteFromBoth(currentUploadId, editCode);
+        }
+
+        function performDeleteFromBoth(uploadId, editCode) {
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            const deleteBtn = document.querySelector(`#deleteDropdown${uploadId}`)?.previousElementSibling;
+            const originalText = confirmBtn.innerHTML;
+            
+            // Show loading
+            confirmBtn.innerHTML = '⏳ Deleting...';
+            confirmBtn.disabled = true;
+            
+            fetch(`/dashboard/delete-both/${uploadId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ edit_code: editCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    alert(data.message || 'Successfully deleted from both rentry.co and your account!');
+                    
+                    // Refresh the page to update the list
+                    window.location.reload();
+                } else {
+                    // Show error message
+                    alert(data.error || 'Failed to delete from rentry.co. Please check your edit code.');
+                    
+                    // Reset delete button state if error occurred
+                    if (deleteBtn) {
+                        deleteBtn.innerHTML = 'Delete ▼';
+                        deleteBtn.disabled = false;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting:', error);
+                alert('Network error occurred while trying to delete. Please try again.');
+                
+                // Reset delete button state if error occurred
+                if (deleteBtn) {
+                    deleteBtn.innerHTML = 'Delete ▼';
+                    deleteBtn.disabled = false;
+                }
+            })
+            .finally(() => {
+                // Reset modal button
+                confirmBtn.innerHTML = originalText;
+                confirmBtn.disabled = false;
+                closeEditCodeModal();
+            });
+        }
+
+        // Handle Enter key in edit code input
+        document.getElementById('editCodeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                confirmDeleteFromBoth();
+            }
+        });
+
+        // Handle Escape key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditCodeModal();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('editCodeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditCodeModal();
+            }
+        });
+
+        // Language editing functionality
+        function editLanguage(uploadId) {
+            const languageDisplay = document.getElementById(`language-${uploadId}`);
+            const languageSelect = document.getElementById(`language-select-${uploadId}`);
+            const languageCustom = document.getElementById(`language-custom-${uploadId}`);
+            const editBtn = languageDisplay.parentElement.querySelector('.edit-language-btn');
+            
+            if (languageSelect.style.display === 'none') {
+                // Switch to edit mode
+                const currentLanguage = languageDisplay.textContent.trim();
+                const isUnknown = currentLanguage === 'Unknown';
+                
+                // Set the current language in the select
+                if (!isUnknown && currentLanguage) {
+                    // Check if it's in the predefined options
+                    const option = Array.from(languageSelect.options).find(opt => opt.text.toLowerCase() === currentLanguage.toLowerCase());
+                    if (option) {
+                        languageSelect.value = option.value;
+                    } else {
+                        // Custom language
+                        languageSelect.value = 'custom';
+                        languageCustom.value = currentLanguage;
+                        languageCustom.style.display = 'block';
+                    }
+                } else {
+                    languageSelect.value = '';
+                }
+                
+                // Show edit controls
+                languageDisplay.style.display = 'none';
+                languageSelect.style.display = 'block';
+                languageSelect.focus();
+                editBtn.textContent = '✅';
+                editBtn.title = 'Save language';
+                
+                // Handle select change
+                languageSelect.onchange = function() {
+                    if (this.value === 'custom') {
+                        languageCustom.style.display = 'block';
+                        languageCustom.focus();
+                    } else {
+                        languageCustom.style.display = 'none';
+                    }
+                };
+                
+                // Handle Enter key on custom input
+                languageCustom.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        saveLanguage(uploadId);
+                    }
+                };
+                
+                // Handle Escape key
+                const handleEscape = function(e) {
+                    if (e.key === 'Escape') {
+                        cancelLanguageEdit(uploadId);
+                    }
+                };
+                languageSelect.onkeydown = handleEscape;
+                languageCustom.onkeydown = handleEscape;
+                
+            } else {
+                // Save the language
+                saveLanguage(uploadId);
+            }
+        }
+        
+        function saveLanguage(uploadId) {
+            const languageDisplay = document.getElementById(`language-${uploadId}`);
+            const languageSelect = document.getElementById(`language-select-${uploadId}`);
+            const languageCustom = document.getElementById(`language-custom-${uploadId}`);
+            const editBtn = languageDisplay.parentElement.querySelector('.edit-language-btn');
+            
+            let newLanguage = '';
+            if (languageSelect.value === 'custom') {
+                newLanguage = languageCustom.value.trim();
+            } else {
+                newLanguage = languageSelect.value;
+            }
+            
+            // Show loading
+            editBtn.textContent = '⏳';
+            editBtn.disabled = true;
+            
+            fetch(`/dashboard/edit-language/${uploadId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ language: newLanguage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the display
+                    if (data.language) {
+                        languageDisplay.innerHTML = `<span class="language-tag">${data.language}</span>`;
+                    } else {
+                        languageDisplay.innerHTML = '<span style="opacity: 0.5;">Unknown</span>';
+                    }
+                    
+                    // Reset edit controls
+                    languageDisplay.style.display = 'block';
+                    languageSelect.style.display = 'none';
+                    languageCustom.style.display = 'none';
+                    editBtn.textContent = '🏷️';
+                    editBtn.title = 'Edit language tag';
+                    editBtn.disabled = false;
+                } else {
+                    alert('Error: ' + data.error);
+                    editBtn.textContent = '✅';
+                    editBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to save language');
+                editBtn.textContent = '✅';
+                editBtn.disabled = false;
+            });
+        }
+        
+        function cancelLanguageEdit(uploadId) {
+            const languageDisplay = document.getElementById(`language-${uploadId}`);
+            const languageSelect = document.getElementById(`language-select-${uploadId}`);
+            const languageCustom = document.getElementById(`language-custom-${uploadId}`);
+            const editBtn = languageDisplay.parentElement.querySelector('.edit-language-btn');
+            
+            // Reset to display mode
+            languageDisplay.style.display = 'block';
+            languageSelect.style.display = 'none';
+            languageCustom.style.display = 'none';
+            editBtn.textContent = '🏷️';
+            editBtn.title = 'Edit language tag';
+        }
+
+        // Handle window resize and scroll to reposition dropdowns
+        function closeAllDropdowns() {
+            document.querySelectorAll('.delete-dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+
+        window.addEventListener('resize', closeAllDropdowns);
+        window.addEventListener('scroll', closeAllDropdowns);
+        
+        // Also close dropdowns when scrolling within the table container
+        document.querySelector('.uploads-container')?.addEventListener('scroll', closeAllDropdowns);
+    </script>
+
+    <footer class="footer">
+        <p>Built with ❤️ using Flask and rentry.co API</p>
+    </footer>
+</body>
+</html> 
