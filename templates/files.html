@@ -1344,12 +1344,12 @@
                         <div class="tooltip help-icon">
                             ?
                             <span class="tooltiptext">
-                                <strong>If empty:</strong> Creates write-once paste (most secure)<br>
-                                <strong>If provided:</strong> You can edit later with this code
+                                <strong>If empty:</strong> Creates write-once paste (CANNOT be deleted later!)<br>
+                                <strong>If provided:</strong> You can edit and DELETE later with this code
                             </span>
                         </div>
                     </div>
-                    <p class="info-text">💡 Empty = Write-once (secure) | Custom = Editable later</p>
+                    <p class="info-text">⚠️ Empty = Write-once (CANNOT delete later!) | Custom = Can edit & delete later</p>
                 </div>
 
                 {% if current_user.is_authenticated %}
@@ -1456,7 +1456,7 @@
                 <div class="edit-code-input-section" id="singleEditCodeInput">
                     <label for="previewEditCode">Edit Code (optional):</label>
                     <input type="text" id="previewEditCode" placeholder="my-secret-code" maxlength="50">
-                    <small>💡 Empty = Write-once pastes (most secure) | Custom = Editable later</small>
+                    <small>⚠️ Empty = Write-once pastes (CANNOT delete later!) | Custom = Can edit & delete later</small>
                 </div>
                 
                 <!-- Individual edit code inputs -->
@@ -1823,6 +1823,14 @@
             const editCodeField = document.getElementById('edit_code');
             const editCode = editCodeField && editCodeField.value ? editCodeField.value.trim() : '';
             
+            // Warn user if no edit code is provided
+            if (!editCode) {
+                const proceed = confirm('⚠️ WARNING: No Edit Code Provided!\n\nWithout an edit code:\n• You CANNOT delete this paste from rentry.co later\n• You CANNOT edit this paste later\n• The paste will be permanent and unchangeable\n• An auto-generated edit code will be created\n\n⚠️ If you want to be able to delete this paste later, please provide an edit code!\n\nDo you want to continue anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+            
             // Upload combined content
             try {
                 // Check save_to_account checkbox
@@ -1895,6 +1903,14 @@
             if (editCodeMode === 'same') {
                 // Use the same edit code for all files
                 singleEditCode = document.getElementById('previewEditCode').value || '';
+                
+                // Warn user if no edit code is provided for same mode
+                if (!singleEditCode.trim()) {
+                    const proceed = confirm('⚠️ WARNING: No Edit Code Provided!\n\nWithout an edit code:\n• You CANNOT delete these pastes from rentry.co later\n• You CANNOT edit these pastes later\n• The pastes will be permanent and unchangeable\n• Auto-generated edit codes will be created\n\n⚠️ If you want to be able to delete these pastes later, please provide an edit code!\n\nDo you want to continue anyway?');
+                    if (!proceed) {
+                        return;
+                    }
+                }
             }
 
             for (let i = 0; i < selectedFiles.length; i++) {

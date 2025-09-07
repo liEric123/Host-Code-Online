@@ -791,12 +791,12 @@
                     <div class="help-icon">
                         ?
                         <span class="tooltiptext">
-                            <strong>If empty:</strong> Creates write-once paste (most secure)<br>
-                            <strong>If provided:</strong> You can edit later with this code
+                            <strong>If empty:</strong> Creates write-once paste (CANNOT be deleted later!)<br>
+                            <strong>If provided:</strong> You can edit and DELETE later with this code
                         </span>
                     </div>
                 </div>
-                <p class="info-text">💡 Empty = Write-once (secure) | Custom = Editable later</p>
+                <p class="info-text">⚠️ Empty = Write-once (CANNOT delete later!) | Custom = Can edit & delete later</p>
             </div>
 
             {% if current_user.is_authenticated %}
@@ -1185,7 +1185,7 @@
 
             // Warn user if no edit code is provided
             if (!formData.edit_code.trim()) {
-                const proceed = confirm('🔒 Creating write-once paste!\n\nNo edit code means:\n• More secure (no one can edit)\n• Cannot be modified later\n• Auto-generated random edit code\n\nDo you want to continue with this secure option?');
+                const proceed = confirm('⚠️ WARNING: No Edit Code Provided!\n\nWithout an edit code:\n• You CANNOT delete this paste from rentry.co later\n• You CANNOT edit this paste later\n• The paste will be permanent and unchangeable\n• An auto-generated edit code will be created\n\n⚠️ If you want to be able to delete this paste later, please provide an edit code!\n\nDo you want to continue anyway?');
                 if (!proceed) {
                     return;
                 }
